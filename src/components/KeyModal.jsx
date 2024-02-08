@@ -13,6 +13,10 @@ const KeyModal = ({ company, companyId, accounts, closeModal }) => {
     );
   };
 
+  const handleEditAccount = (accountId) => {
+    router.push(`/dashboard/keys/${encodeURIComponent(account._id)}`);
+  };
+
   const handleDeleteAccount = (company, account, accountId) => {
     router.push(
       `/dashboard/keys/delete-account-page?accountId=${encodeURIComponent(
@@ -55,10 +59,8 @@ const KeyModal = ({ company, companyId, accounts, closeModal }) => {
                           <div>Contraseña: {account.password}</div>
                         </div>
                         <div className="flex gap-2">
-                          <Link
-                            href={`/dashboard/keys/${encodeURIComponent(
-                              account._id
-                            )}`}
+                          <button
+                            onClick={() => handleEditAccount(account._id)}
                             className=" text-gray-600 hover:scale-110 duration-200 hover:cursor-pointer"
                           >
                             <svg
@@ -73,7 +75,7 @@ const KeyModal = ({ company, companyId, accounts, closeModal }) => {
                               <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
                               <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
                             </svg>
-                          </Link>
+                          </button>
                           <button
                             onClick={() =>
                               handleDeleteAccount(
