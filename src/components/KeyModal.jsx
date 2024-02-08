@@ -14,7 +14,7 @@ const KeyModal = ({ company, companyId, accounts, closeModal }) => {
   };
 
   const handleEditAccount = (accountId) => {
-    router.push(`/dashboard/keys/${encodeURIComponent(account._id)}`);
+    router.push(`/dashboard/keys/${encodeURIComponent(accountId)}`);
   };
 
   const handleDeleteAccount = (company, account, accountId) => {
