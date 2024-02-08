@@ -3,7 +3,7 @@ import axios from "axios";
 import { useSession, signOut } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
-import KeyModal from "../../../components/keyModal";
+import KeyModal from "@/components/keyModal";
 
 function KeysPage() {
   const { data: session, status } = useSession();
