@@ -10,7 +10,7 @@ const DeleteAccountPage = () => {
   const { data: session } = useSession();
   const router = useRouter();
   const params = useSearchParams();
-  const searchAccountUser = params.get("account");
+  const searchAccountCompany = params.get("account");
   const searchAccountId = params.get("accountId");
   const searchCompany = params.get("company");
 
@@ -49,7 +49,7 @@ const DeleteAccountPage = () => {
       )}
       <div className="text-center text-2xl">
         <h1>
-          Vamos a eliminar la cuenta <strong>{searchAccountUser}</strong>
+          Vamos a eliminar la cuenta <strong>{searchAccountCompany}</strong>
         </h1>
         <p>
           de <strong>{searchCompany} </strong> esta seguro?

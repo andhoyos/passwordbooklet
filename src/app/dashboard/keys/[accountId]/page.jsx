@@ -1,6 +1,5 @@
 import Key from "@/models/Key";
 import AccountEditForm from "@/components/AccountEditForm";
-import { useRouter, useSearchParams } from "next/navigation";
 
 async function findAccountById(accountId) {
   try {
@@ -23,12 +22,8 @@ async function findAccountById(accountId) {
   }
 }
 
-async function AccountsEditPage() {
-  const router = useRouter();
-  const params = useSearchParams();
-  const searchAccountId = params.get("accountId");
-
-  const accountEdit = await findAccountById(searchAccountId);
+async function AccountsEditPage({ params }) {
+  const accountEdit = await findAccountById(params.accountId);
   const { account, company, companyId } = accountEdit;
   console.log(accountEdit);
 
