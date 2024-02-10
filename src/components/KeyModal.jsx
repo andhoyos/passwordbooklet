@@ -13,8 +13,16 @@ const KeyModal = ({ company, companyId, accounts, closeModal }) => {
     );
   };
 
-  const handleEditAccount = (accountId) => {
-    router.push(`/dashboard/keys/${encodeURIComponent(accountId)}`);
+  const handleEditAccount = (accountId, account, accountPassword, company) => {
+    router.push(
+      `/dashboard/keys/edit-account-page?accountId=${encodeURIComponent(
+        accountId
+      )}&account=${encodeURIComponent(
+        account
+      )}&accountPassword=${encodeURIComponent(
+        accountPassword
+      )}&company=${encodeURIComponent(company)}`
+    );
   };
 
   const handleDeleteAccount = (company, account, accountId) => {
@@ -59,7 +67,7 @@ const KeyModal = ({ company, companyId, accounts, closeModal }) => {
                           <div>Contraseña: {account.password}</div>
                         </div>
                         <div className="flex gap-2">
-                          <Link
+                          {/* <Link
                             href={`/dashboard/keys/${encodeURIComponent(
                               account._id
                             )}`}
@@ -77,7 +85,31 @@ const KeyModal = ({ company, companyId, accounts, closeModal }) => {
                               <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
                               <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
                             </svg>
-                          </Link>
+                          </Link> */}
+                          <button
+                            onClick={() =>
+                              handleEditAccount(
+                                account._id,
+                                account.name,
+                                account.password,
+                                company
+                              )
+                            }
+                            className=" text-gray-600 hover:scale-110 duration-200 hover:cursor-pointer"
+                          >
+                            <svg
+                              className="w-6 stroke-green-700"
+                              viewBox="0 0 24 24"
+                              fill="none"
+                              stroke="currentColor"
+                              strokeWidth="2"
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                            >
+                              <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
+                              <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
+                            </svg>
+                          </button>
                           <button
                             onClick={() =>
                               handleDeleteAccount(
