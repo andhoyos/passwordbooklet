@@ -3,12 +3,13 @@ import axios from "axios";
 import { useSession, signOut } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
-import KeyModal from "@/components/KeyModal";
+import KeyModal from "@/components/keyModal";
 
 function KeysPage() {
   const { data: session, status } = useSession();
   const router = useRouter();
   const [keysList, setKeysList] = useState([]);
+  const [loading, setLoading] = useState(true);
   const [selectedCompany, setSelectedCompany] = useState(null);
 
   useEffect(() => {
@@ -25,6 +26,8 @@ function KeysPage() {
         setKeysList(data);
       } catch (error) {
         console.error("Error fetching keys:", error);
+      } finally {
+        setLoading(false);
       }
     };
 
@@ -51,10 +54,13 @@ function KeysPage() {
   ];
   let colorIndex = 0;
 
-  if (status === "loading") {
+  if (loading) {
     return (
-      <div className="flex items-center justify-center h-screen">
-        <div className="loader"></div>
+      <div className="flex items-center justify-center  h-80">
+        <div className="flex items-center justify-center gap-5 flex-col">
+          <div className="loader "></div>
+          <div>estamos procesando los datos ...</div>
+        </div>
       </div>
     );
   }

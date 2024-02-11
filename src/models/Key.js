@@ -2,7 +2,8 @@ import {mongoose, model, models} from 'mongoose';
 
 const keySchema = new mongoose.Schema({
   company: { type: String, required: true },
-  accounts: [{ name: String, password: String }],
+  accounts: [{ name: { type: String, required: true },
+    password: { type: String, required: true } }],
   user: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
 });
 
