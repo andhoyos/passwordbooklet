@@ -46,11 +46,10 @@ function KeysPage() {
   };
 
   const colors = [
-    "bg-blue-500",
-    "bg-green-500",
-    "bg-yellow-500",
-    "bg-red-500",
-    "bg-purple-500",
+    "bg-gradient-to-r from-purple-500 to-pink-500",
+    "bg-gradient-to-r from-blue-500 to-teal-500",
+    "bg-gradient-to-r from-green-500 to-lime-500",
+    "bg-gradient-to-r from-orange-500 to-amber-500",
   ];
   let colorIndex = 0;
 
@@ -72,7 +71,7 @@ function KeysPage() {
 
   if (keysList.length === 0) {
     return (
-      <div className=" flex flex-col gap-y-10 items-center justify-center md:pb-auto pb-5">
+      <div className="h-[calc(100vh-4rem)] flex flex-col gap-y-10 items-center justify-center">
         <h1 className="font-bold text-3xl">Keys</h1>
         <p>No hay claves registradas.</p>
         <button
@@ -97,7 +96,7 @@ function KeysPage() {
   }
 
   return (
-    <div className="flex flex-col gap-y-10 items-center justify-center">
+    <div className="flex flex-col gap-y-10 items-center justify-center md:pb-auto pb-5">
       <h1 className="font-bold text-3xl">Keys</h1>
 
       <div className="grid grid-cols-3 w-full md:w-auto gap-2 max-[500px]:grid-cols-1 px-3 ">

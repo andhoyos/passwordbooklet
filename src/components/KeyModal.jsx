@@ -52,7 +52,7 @@ const KeyModal = ({ company, companyId, accounts, closeModal }) => {
           <div className="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
             <div className="sm:flex sm:items-start">
               <div className="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left w-full">
-                <h3 className="text-lg leading-6 font-medium text-gray-900">
+                <h3 className="w-fit text-xl leading-6 font-bold bg-gradient-to-r from-rose-400 via-fuchsia-500 to-indigo-500 bg-clip-text text-transparent">
                   {company}
                 </h3>
                 <div>
@@ -143,9 +143,21 @@ const KeyModal = ({ company, companyId, accounts, closeModal }) => {
                 <div className="text-end pt-5">
                   <button
                     onClick={() => handleNewAccount(companyId, company)}
-                    className=" text-gray-600 hover:scale-110 duration-200 hover:cursor-pointer"
+                    title="Add New"
+                    className="group cursor-pointer outline-none hover:rotate-90 duration-300"
                   >
-                    new
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      viewBox="0 0 24 24"
+                      className="w-8 stroke-pink-400 fill-none group-hover:fill-pink-600 group-active:stroke-pink-200 group-active:fill-pink-600 group-active:duration-0 duration-300"
+                    >
+                      <path
+                        d="M12 22C17.5 22 22 17.5 22 12C22 6.5 17.5 2 12 2C6.5 2 2 6.5 2 12C2 17.5 6.5 22 12 22Z"
+                        stroke-width="1.5"
+                      ></path>
+                      <path d="M8 12H16" stroke-width="1.5"></path>
+                      <path d="M12 16V8" stroke-width="1.5"></path>
+                    </svg>
                   </button>
                 </div>
               </div>
