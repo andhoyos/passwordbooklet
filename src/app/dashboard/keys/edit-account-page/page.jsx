@@ -63,19 +63,17 @@ const EditAccountPage = () => {
   };
 
   return (
-    <div className="flex justify-center items-center h-screen">
+    <div className="flex justify-center items-center md:mt-14 mt-20">
       <form
         onSubmit={editAccount}
         ref={formRef}
-        className="bg-white px-8 py-10 max-w-md  w-96 mx-auto shadow-lg  rounded-lg"
+        className="bg-white text-slate-500 px-8 py-10 max-w-md  w-96 mx-auto shadow-lg  rounded-lg"
       >
         {error && <div className="bg-red-500 text-white p-2 mb-2">{error}</div>}
-        <h1 className="text-4xl font-bold  text-slate-700">Account Edit</h1>
-        <p className="text-2xl font-bold mb-7 text-slate-700">
-          {searchCompany}
-        </p>
+        <h1 className="md:text-3xl text-2xl font-bold  ">Account Edit</h1>
+        <p className="md:text-2xl text-xl font-bold mb-7">{searchCompany}</p>
 
-        <label className="text-slate-500">Cuenta:</label>
+        <label className="text-slate-400">Cuenta:</label>
         <input
           type="text"
           name="account"
@@ -84,7 +82,7 @@ const EditAccountPage = () => {
           className="bg-slate-100 px-4 py-2 block mb-2 w-full"
         />
 
-        <label className="text-slate-500">Password:</label>
+        <label className="text-slate-400">Password:</label>
         <input
           type="text"
           name="password"

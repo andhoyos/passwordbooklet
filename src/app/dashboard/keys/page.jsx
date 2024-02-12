@@ -45,6 +45,10 @@ function KeysPage() {
     setSelectedCompany(null);
   };
 
+  const handleNewKey = () => {
+    router.push("/dashboard/forms");
+  };
+
   const colors = [
     "bg-gradient-to-r from-purple-500 to-pink-500",
     "bg-gradient-to-r from-blue-500 to-teal-500",
@@ -82,49 +86,30 @@ function KeysPage() {
         >
           Crear Registro
         </button>
-
-        <button
-          className="rounded-lg border border-slate-500 bg-slate-500 text-white shadow-sm transition-all hover:border-slate-700 hover:bg-slate-700 focus:ring focus:ring-slate-200 disabled:cursor-not-allowed disabled:border-slate-500 disabled:bg-slate-500 disabled:opacity-80 px-4 py-2   mt-4"
-          onClick={() => {
-            signOut();
-          }}
-        >
-          Signout
-        </button>
       </div>
     );
   }
 
   return (
     <div className="flex flex-col gap-y-10 items-center justify-center md:pb-auto pb-5">
-      <h1 className="font-bold text-3xl">Keys</h1>
+      <h1 className="font-bold md:text-3xl text-2xl">Keys</h1>
 
       <div className="grid grid-cols-3 w-full md:w-auto gap-2 max-[500px]:grid-cols-1 px-3 ">
         {keysList.map((key) => (
           <div
             key={key._id}
             onClick={() => handleCompanyClick(key)}
-            className={`group w-full rounded-lg ${
+            className={`group w-full rounded-lg text-white ${
               colors[colorIndex++ % colors.length]
             } p-5 transition relative duration-300 cursor-pointer hover:translate-y-[3px] hover:shadow-[0_-8px_0px_0px_red]`}
           >
-            <p className="cursor-pointer text-white text-2xl ">{key.company}</p>
+            <p className="cursor-pointer text-2xl">{key.company}</p>
+            <p>
+              {key.accounts.length}{" "}
+              {key.accounts.length === 1 ? "cuenta" : "cuentas"}
+            </p>
           </div>
         ))}
-        {/* 
-        {keysList.map((key) => (
-          <div
-            key={key._id}
-            onClick={() => handleCompanyClick(key.company)}
-            className="border text-gray-50  duration-300 relative group cursor-pointer w-full h-20 overflow-hidden  rounded-lg bg-neutral-800 p-5  font-extrabold hover:bg-sky-700"
-          >
-            <div className="absolute group-hover:-top-1 group-hover:-right-2 z-10 w-16 h-16 rounded-full group-hover:scale-150  duration-700 right-12 top-12 bg-yellow-500"></div>
-            <div className="absolute group-hover:-top-1 group-hover:-right-2 z-10 w-12 h-12 rounded-full group-hover:scale-150  duration-700 right-20 -top-6 bg-orange-500"></div>
-            <div className="absolute group-hover:-top-1 group-hover:-right-2 z-10 w-8 h-8   rounded-full group-hover:scale-150  duration-700 right-32 top-6 bg-pink-500"></div>
-            <div className="absolute group-hover:-top-1 group-hover:-right-2 z-10 w-4 h-4   rounded-full group-hover:scale-150  duration-700 right-2 top-12 bg-red-600"></div>
-            <p className="z-10 absolute bottom-2 left-2">{key.company}</p>
-          </div>
-        ))} */}
       </div>
 
       {selectedCompany && (
@@ -142,10 +127,10 @@ function KeysPage() {
       <button
         className="rounded-lg border border-slate-500 bg-slate-500 text-white shadow-sm transition-all hover:border-slate-700 hover:bg-slate-700 focus:ring focus:ring-slate-200 disabled:cursor-not-allowed disabled:border-slate-500 disabled:bg-slate-500 disabled:opacity-80 px-4 py-2   mt-4"
         onClick={() => {
-          signOut();
+          handleNewKey();
         }}
       >
-        Signout
+        Add new
       </button>
     </div>
   );

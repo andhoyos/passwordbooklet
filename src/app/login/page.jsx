@@ -32,7 +32,7 @@ function LoginPage() {
             {error}
           </div>
         )}
-        <h1 className="md:text-4xl text-2xl font-bold mb-7">Signin</h1>
+        <h1 className="md:text-3xl text-2xl font-bold mb-7">Signin</h1>
 
         <label className="text-slate-400">Username:</label>
         <input

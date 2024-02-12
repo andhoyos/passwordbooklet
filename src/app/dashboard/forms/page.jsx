@@ -82,7 +82,7 @@ const KeyForm = () => {
             {error}
           </div>
         )}
-        <h1 className="md:text-4xl text-2xl font-bold mb-7">
+        <h1 className="md:text-3xl text-2xl font-bold mb-7">
           {isCompanyId ? "Update Key" : "New Key"}
         </h1>
 

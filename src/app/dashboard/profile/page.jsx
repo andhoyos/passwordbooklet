@@ -6,7 +6,7 @@ function ProfilePage() {
 
   return (
     <div className=" flex flex-col gap-y-10 items-center justify-center">
-      <h1 className="font-bold text-3xl">Profile</h1>
+      <h1 className="font-bold md:text-3xl text-2xl">Profile</h1>
 
       <pre className="bg-zinc-800 md:p-4 p-1.5">
         {JSON.stringify(

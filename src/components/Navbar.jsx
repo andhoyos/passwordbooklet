@@ -1,11 +1,24 @@
+"use client";
+
 import Link from "next/link";
 import Image from "next/image";
-import { getServerSession } from "next-auth";
+import { useSession, signOut } from "next-auth/react";
+import { useState } from "react";
 import logo from "./logo.png";
 import user from "./user.svg";
 
-async function Navbar() {
-  const session = await getServerSession();
+export default function Navbar() {
+  const { data: session, status } = useSession();
+
+  const [isOpen, setIsOpen] = useState(false);
+
+  const toggleDropdown = () => {
+    setIsOpen(!isOpen);
+  };
+
+  const handleItemClick = () => {
+    setIsOpen(false);
+  };
 
   return (
     <nav className="bg-slate-50 py-4 px-8">
@@ -20,22 +33,67 @@ async function Navbar() {
           </h1>
         </Link>
 
-        <ul className="flex gap-x-2">
-          {session ? (
-            <>
-              <li className="px-3 py-1 pointer">
-                <Link href="/dashboard/profile">
-                  <Image src={user} width={40} height={40} alt="user" />
-                </Link>
-              </li>
-            </>
-          ) : (
-            <></>
-          )}
-        </ul>
+        {status === "authenticated" && (
+          <div className="relative">
+            <button
+              onClick={toggleDropdown}
+              className="flex text-sm bg-slate-500 rounded-full md:me-0 focus:ring-4 focus:ring-gray-300 dark:focus:ring-gray-600"
+              type="button"
+            >
+              <Image src={user} width={40} height={40} alt="user" />
+            </button>
+            {isOpen && (
+              <div className=" absolute right-0 z-10 bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700 dark:divide-gray-600">
+                <div className="px-4 py-3 text-sm text-gray-900 dark:text-white">
+                  <div>{session.user.username}</div>
+                  <div className="font-medium truncate">
+                    {session.user.email}
+                  </div>
+                </div>
+                <ul className="py-2 text-sm text-gray-700 dark:text-gray-200">
+                  <li>
+                    <Link
+                      href="/dashboard/profile"
+                      className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
+                      onClick={handleItemClick}
+                    >
+                      Dashboard
+                    </Link>
+                  </li>
+                  <li>
+                    <Link
+                      href="/dashboard/keys"
+                      className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
+                      onClick={handleItemClick}
+                    >
+                      Keys
+                    </Link>
+                  </li>
+                  <li>
+                    <Link
+                      href="#"
+                      className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
+                      onClick={handleItemClick}
+                    >
+                      Earnings
+                    </Link>
+                  </li>
+                </ul>
+                <div className="py-2">
+                  <p
+                    className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white cursor-pointer"
+                    onClick={() => {
+                      signOut();
+                    }}
+                  >
+                    Sign out
+                  </p>
+                </div>
+              </div>
+            )}
+          </div>
+        )}
       </div>
     </nav>
   );
 }
-
-export default Navbar;
