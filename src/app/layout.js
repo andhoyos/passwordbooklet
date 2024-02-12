@@ -13,7 +13,7 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      <body className="bg-slate-50 h-screen md:py-0 py-6">
+      <body className="bg-slate-50 h-screen md:py-0 py-6 text-slate-400">
         <Providers>
           <Navbar />
           <div className="container mx-auto">{children}</div>
