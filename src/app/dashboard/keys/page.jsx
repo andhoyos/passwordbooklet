@@ -72,7 +72,7 @@ function KeysPage() {
 
   if (keysList.length === 0) {
     return (
-      <div className="h-[calc(100vh-4rem)] flex flex-col gap-y-10 items-center justify-center md:pb-auto pb-5">
+      <div className=" flex flex-col gap-y-10 items-center justify-center md:pb-auto pb-5">
         <h1 className="font-bold text-3xl">Keys</h1>
         <p>No hay claves registradas.</p>
         <button
