@@ -2,23 +2,23 @@ import { useSession } from "next-auth/react";
 import { useState, useRef } from "react";
 import axios from "axios";
 
-const ProfileModalEdit = ({ username, email, closeModal }) => {
+const CompanyModalEdit = ({
+  company,
+  companyId,
+  closeModal,
+  updateKeyInList,
+}) => {
   const { data: session } = useSession();
   const formRef = useRef(null);
   const [error, setError] = useState("");
   const [message, setMessage] = useState("");
 
   const [datosFormulario, setDatosFormulario] = useState({
-    username: username,
-    email: email,
+    company: company,
   });
 
-  const handleChangeUsername = (nuevoUsername) => {
-    setDatosFormulario({ ...datosFormulario, username: nuevoUsername });
-  };
-
-  const handleChangeEmail = (nuevoEmail) => {
-    setDatosFormulario({ ...datosFormulario, email: nuevoEmail });
+  const handleChangeCompany = (nuevaCompany) => {
+    setDatosFormulario({ ...datosFormulario, company: nuevaCompany });
   };
 
   const handleSubmit = async (event) => {
@@ -26,21 +26,18 @@ const ProfileModalEdit = ({ username, email, closeModal }) => {
 
     try {
       const datosAEnviar = new FormData(event.target);
-      const username = datosAEnviar.get("username");
-      const email = datosAEnviar.get("email");
-      if (!username || !email) {
+      const company = datosAEnviar.get("company");
+      if (!company) {
         setError("Por favor completa todos los campos");
         return;
       }
-      const response = await axios.put("/api/auth/profile", {
+      const response = await axios.patch("/api/auth/keys", {
+        companyId: companyId,
         updatedData: {
-          username: username,
-          email: email,
+          company: company,
         },
         user: session,
       });
-
-      session.user = response.data;
 
       console.log(response.data);
 
@@ -49,6 +46,7 @@ const ProfileModalEdit = ({ username, email, closeModal }) => {
 
         setTimeout(() => {
           closeModal();
+          updateKeyInList();
         }, "2000");
       }
     } catch (error) {
@@ -93,23 +91,14 @@ const ProfileModalEdit = ({ username, email, closeModal }) => {
                       {message}
                     </p>
                   )}
-                  <h1 className="text-3xl font-bold py-2">Profile Edit</h1>
+                  <h1 className="text-3xl font-bold py-2">Company Edit</h1>
 
-                  <label className="text-slate-400">Username:</label>
+                  <label className="text-slate-400">Company:</label>
                   <input
                     type="text"
-                    name="username"
-                    defaultValue={datosFormulario.username}
-                    onChange={handleChangeUsername}
-                    className="bg-slate-100 px-4 py-2 block mb-2 w-full"
-                  />
-
-                  <label className="text-slate-400">Email:</label>
-                  <input
-                    type="text"
-                    name="email"
-                    defaultValue={datosFormulario.email}
-                    onChange={handleChangeEmail}
+                    name="company"
+                    defaultValue={datosFormulario.company}
+                    onChange={handleChangeCompany}
                     className="bg-slate-100 px-4 py-2 block mb-2 w-full"
                   />
 
@@ -145,4 +134,4 @@ const ProfileModalEdit = ({ username, email, closeModal }) => {
   );
 };
 
-export default ProfileModalEdit;
+export default CompanyModalEdit;

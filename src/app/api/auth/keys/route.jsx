@@ -85,11 +85,11 @@ export async function PUT(request) {
   }
 
   try {
+    await connectDB();
     const key = await Key.findOneAndUpdate(
       {
         user: session.user._id,
         "accounts._id": accountId,
-        // _id: companyId,
       },
       {
         $set: {
@@ -111,6 +111,44 @@ export async function PUT(request) {
     console.error("Error updating key:", error);
     return NextResponse.json(
       { message: "Internal Server Error" },
+      { status: 500 }
+    );
+  }
+}
+
+export async function PATCH(request) {
+  const data = await request.json();
+  const { companyId, updatedData, user } = data;
+  const session = user;
+
+  if (!session?.user) {
+    return NextResponse.json({ message: "Unautorized" }, { status: 401 });
+  }
+
+  try {
+    await connectDB();
+    const companyUpdate = await Key.findOneAndUpdate(
+      {
+        _id: companyId,
+        user: session.user._id,
+      },
+      {
+        $set: updatedData,
+      },
+      {
+        new: true,
+      }
+    );
+
+    if (!companyUpdate) {
+      NextResponse.json({ message: "Company not found" }, { status: 404 });
+    }
+
+    return NextResponse.json(companyUpdate);
+  } catch (error) {
+    console.error("error updating company");
+    return NextResponse.json(
+      { message: "Internal server Error" },
       { status: 500 }
     );
   }
