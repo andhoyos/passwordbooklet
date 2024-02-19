@@ -133,7 +133,7 @@ function ProfilePage() {
                   </div>
                 </div>
                 <a
-                  href="/dashboard/keys"
+                  href="/dashboard/keys/companies/company-edit-page"
                   className="mt-3 font-semibold hover:text-indigo-500 inline-flex items-center"
                 >
                   Administrar

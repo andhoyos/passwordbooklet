@@ -4,6 +4,7 @@ import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
 import CompanyModalEdit from "@/components/CompanyModalEdit";
+import CompanyModalDelete from "@/components/CompanyModalDelete";
 
 function KeysPage() {
   const { data: session, status } = useSession();
@@ -11,6 +12,7 @@ function KeysPage() {
   const [keysList, setKeysList] = useState([]);
   const [loading, setLoading] = useState(true);
   const [selectedCompany, setSelectedCompany] = useState(null);
+  const [selectedCompanyDelete, setSelectedCompanyDelete] = useState(null);
 
   const updateKeyInList = async () => {
     try {
@@ -57,17 +59,14 @@ function KeysPage() {
     console.log(company);
   };
 
-  const closeModal = () => {
-    setSelectedCompany(null);
+  const handleCompanyClickDelete = (company) => {
+    setSelectedCompanyDelete(company);
   };
 
-  const colors = [
-    "bg-gradient-to-r from-purple-500 to-pink-500",
-    "bg-gradient-to-r from-blue-500 to-teal-500",
-    "bg-gradient-to-r from-green-500 to-lime-500",
-    "bg-gradient-to-r from-orange-500 to-amber-500",
-  ];
-  let colorIndex = 0;
+  const closeModal = () => {
+    setSelectedCompany(null);
+    setSelectedCompanyDelete(null);
+  };
 
   if (loading) {
     return (
@@ -104,26 +103,63 @@ function KeysPage() {
 
   return (
     <div className="flex flex-col gap-y-10 items-center justify-center md:pb-auto pb-5">
-      <h1 className="font-bold text-3xl">Keys</h1>
+      {/* acordeon */}
 
-      <div className="grid grid-cols-3 w-full md:w-auto gap-2 max-[500px]:grid-cols-1 px-3 ">
-        {keysList.map((key) => (
-          <div
-            key={key._id}
-            onClick={() => handleCompanyClick(key)}
-            className={`group w-full rounded-lg text-white ${
-              colors[colorIndex++ % colors.length]
-            } p-5 transition relative duration-300 cursor-pointer hover:translate-y-[3px] hover:shadow-[0_-8px_0px_0px_red]`}
-          >
-            <p className="cursor-pointer text-2xl">{key.company}</p>
-          </div>
-        ))}
+      <div className="container mx-auto my-12 p-4 shadow-md bg-white rounded-md md:w-3/4 w-auto">
+        <h1 className="text-2xl font-bold mb-4">Companies </h1>
+        <table className="min-w-full divide-y divide-slate-500 table-auto">
+          <thead>
+            <tr>
+              <th className="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider border-b">
+                Company
+              </th>
+              <th className="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider border-b">
+                Actions
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            {keysList.map((key) => (
+              <tr
+                key={key._id}
+                className={`group w-full  px-5 py-3 transition relative duration-300 `}
+              >
+                <td className="px-6 py-2 break-words border-b">
+                  {key.company}
+                </td>
+                <td className="px-6 py-2 whitespace-nowrap border-b">
+                  <button
+                    className=" py-2.5 md:py-1.5 mx-2 text-green-500"
+                    onClick={() => handleCompanyClick(key)}
+                  >
+                    Edit
+                  </button>
+                  <button
+                    className=" py-2.5 md:py-1.5 mx-2 text-red-500"
+                    onClick={() => handleCompanyClickDelete(key)}
+                  >
+                    Delete
+                  </button>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
       </div>
 
       {selectedCompany && (
         <CompanyModalEdit
           company={selectedCompany.company}
           companyId={selectedCompany._id}
+          closeModal={closeModal}
+          updateKeyInList={updateKeyInList}
+        />
+      )}
+
+      {selectedCompanyDelete && (
+        <CompanyModalDelete
+          company={selectedCompanyDelete.company}
+          companyId={selectedCompanyDelete._id}
           closeModal={closeModal}
           updateKeyInList={updateKeyInList}
         />

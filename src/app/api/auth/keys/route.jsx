@@ -156,7 +156,7 @@ export async function PATCH(request) {
 
 export async function DELETE(request) {
   const data = await request.json();
-  const { accountId, user } = data;
+  const { accountId, companyId, user } = data;
   const session = user;
   console.log("esta es la cuenta id", data);
   if (!session.user) {
@@ -166,17 +166,36 @@ export async function DELETE(request) {
   try {
     await connectDB();
 
-    const deletedAccount = await Key.findOneAndUpdate(
-      { user: session.user._id, "accounts._id": accountId },
-      { $pull: { accounts: { _id: accountId } } },
-      { new: true }
-    );
+    if (accountId) {
+      const deletedAccount = await Key.findOneAndUpdate(
+        { user: session.user._id, "accounts._id": accountId },
+        { $pull: { accounts: { _id: accountId } } },
+        { new: true }
+      );
 
-    console.log(deletedAccount);
-    if (deletedAccount) {
-      return NextResponse.json(deletedAccount);
+      console.log(deletedAccount);
+      if (deletedAccount) {
+        return NextResponse.json(deletedAccount);
+      }
+      return NextResponse.json(
+        { message: "Account not found" },
+        { status: 404 }
+      );
+    } else if (companyId) {
+      const deleteCompany = await Key.findOneAndDelete({
+        _id: companyId,
+        user: session.user._id,
+      });
+      if (deleteCompany) {
+        return NextResponse.json(deleteCompany);
+      }
+      return NextResponse.json(
+        { message: "Company not found" },
+        { status: 404 }
+      );
     }
-    return NextResponse.json({ message: "Account not found" }, { status: 404 });
+
+    NextResponse.json({ message: "Invalid request" }, { status: 400 });
   } catch (error) {
     console.error("Error during delete:", error);
     return NextResponse.json(
