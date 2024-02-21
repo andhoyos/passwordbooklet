@@ -27,10 +27,7 @@ export async function PUT(request) {
     );
 
     if (!userUpdate) {
-      return NextResponse.json(
-        { message: "user or user not found" },
-        { status: 404 }
-      );
+      return NextResponse.json({ message: "user  not found" }, { status: 404 });
     }
 
     session.user = userUpdate;
@@ -42,6 +39,37 @@ export async function PUT(request) {
     });
   } catch (error) {
     console.error("Error updating user:", error);
+    return NextResponse.json(
+      { message: "Internal Server Error" },
+      { status: 500 }
+    );
+  }
+}
+
+export async function DELETE(request) {
+  const data = await request.json();
+  const { userId, user } = data;
+  const session = user;
+
+  if (!session?.user) {
+    return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
+  }
+
+  try {
+    await connectDB();
+    const deletedUser = await User.findOneAndDelete({
+      _id: userId,
+    });
+
+    if (!deletedUser) {
+      return NextResponse.json({ message: "user  not found" }, { status: 404 });
+    }
+
+    console.log(deletedUser);
+
+    return NextResponse.json(deletedUser);
+  } catch (error) {
+    console.error("Error deleting user:", error);
     return NextResponse.json(
       { message: "Internal Server Error" },
       { status: 500 }

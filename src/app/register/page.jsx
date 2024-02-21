@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 
 function RegisterPage() {
   const [error, setError] = useState("");
+  const [message, setMessage] = useState("");
   const router = useRouter();
 
   const handleSubmit = async (event) => {
@@ -19,9 +20,12 @@ function RegisterPage() {
         password: formData.get("password"),
       });
 
-      console.log(response.data);
-
-      router.push("/login");
+      if (response.data) {
+        setMessage("Usuario registrado correctamente");
+        setTimeout(() => {
+          router.push("/login");
+        }, "1000");
+      }
     } catch (error) {
       console.error("Error during registration:", error);
       if (error.response?.data.message) {
@@ -42,6 +46,11 @@ function RegisterPage() {
           <div className="bg-red-400 text-white p-2 mb-2 rounded-md">
             {error}
           </div>
+        )}
+        {message && (
+          <p className="message bg-green-400 text-white p-2 mb-2 rounded-md">
+            {message}
+          </p>
         )}
         <h1 className="md:text-3xl text-2xl font-bold mb-7 ">Signup</h1>
 

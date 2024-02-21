@@ -3,11 +3,13 @@ import { useSession } from "next-auth/react";
 import { useState, useEffect } from "react";
 import axios from "axios";
 import ProfileModalEdit from "@/components/ProfileModalEdit";
+import ProfileModalDelete from "@/components/ProfileModalDelete";
 
 function ProfilePage() {
   const { data: session, status } = useSession();
   const [keysList, setKeysList] = useState([]);
   const [selectedUser, setSelectedUser] = useState(null);
+  const [selectedUserDelete, setSelectedUserDelete] = useState(null);
 
   const totalAccounts = keysList.reduce(
     (acc, key) => acc + key.accounts.length,
@@ -39,9 +41,13 @@ function ProfilePage() {
   const handleProfileClick = (profile) => {
     setSelectedUser(profile);
   };
+  const handleProfileClickDelete = (profile) => {
+    setSelectedUserDelete(profile);
+  };
 
   const closeModal = () => {
     setSelectedUser(null);
+    setSelectedUserDelete(null);
   };
 
   return (
@@ -75,28 +81,43 @@ function ProfilePage() {
                   <h3>Status: {status}</h3>
                   <h3>Id: {session.user._id}</h3>
                 </div>
-                <button
-                  onClick={() => handleProfileClick(session)}
-                  className="mt-3 font-semibold hover:text-indigo-500 inline-flex items-center"
-                >
-                  Editar Perfil
-                  <svg
-                    fill="none"
-                    stroke="currentColor"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth="2"
-                    className="w-4 h-4 ml-2"
-                    viewBox="0 0 24 24"
+                <div className="flex justify-between">
+                  <button
+                    onClick={() => handleProfileClick(session)}
+                    className="mt-3 font-semibold hover:text-indigo-500 inline-flex items-center"
                   >
-                    <path d="M5 12h14M12 5l7 7-7 7"></path>
-                  </svg>
-                </button>
+                    Editar Perfil
+                    <svg
+                      fill="none"
+                      stroke="currentColor"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth="2"
+                      className="w-4 h-4 ml-2"
+                      viewBox="0 0 24 24"
+                    >
+                      <path d="M5 12h14M12 5l7 7-7 7"></path>
+                    </svg>
+                  </button>
+                  <button
+                    onClick={() => handleProfileClickDelete(session)}
+                    className="mt-3 font-semibold hover:text-red-500 inline-flex items-center"
+                  >
+                    Eliminar
+                  </button>
+                </div>
                 {selectedUser && (
                   <ProfileModalEdit
                     username={selectedUser.user.username}
                     email={selectedUser.user.email}
                     userId={selectedUser.user._id}
+                    closeModal={closeModal}
+                  />
+                )}
+                {selectedUserDelete && (
+                  <ProfileModalDelete
+                    username={selectedUserDelete.user.username}
+                    userId={selectedUserDelete.user._id}
                     closeModal={closeModal}
                   />
                 )}

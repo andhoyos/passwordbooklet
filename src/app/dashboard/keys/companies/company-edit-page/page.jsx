@@ -103,8 +103,6 @@ function KeysPage() {
 
   return (
     <div className="flex flex-col gap-y-10 items-center justify-center md:pb-auto pb-5">
-      {/* acordeon */}
-
       <div className="container mx-auto my-12 p-4 shadow-md bg-white rounded-md md:w-3/4 w-auto">
         <h1 className="text-2xl font-bold mb-4">Companies </h1>
         <table className="min-w-full divide-y divide-slate-500 table-auto">
@@ -143,6 +141,17 @@ function KeysPage() {
                 </td>
               </tr>
             ))}
+            <tr className="w-full  px-5 py-3">
+              <td></td>
+              <td className="px-6 py-2 whitespace-nowrap ">
+                <a
+                  href="/dashboard/forms"
+                  className=" px-4 py-2.5 text-indigo-500"
+                >
+                  Add new
+                </a>
+              </td>
+            </tr>
           </tbody>
         </table>
       </div>

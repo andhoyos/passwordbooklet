@@ -1,35 +1,26 @@
-import { useSession } from "next-auth/react";
+import { useSession, signOut } from "next-auth/react";
 import { useState } from "react";
 import axios from "axios";
 
-const DeleteCompanyPage = ({
-  company,
-  companyId,
-  closeModal,
-  updateKeyInList,
-}) => {
+const DeleteProfilePage = ({ username, userId, closeModal }) => {
   const { data: session } = useSession();
   const [error, setError] = useState("");
   const [message, setMessage] = useState("");
 
-  const deleteAccount = async () => {
+  const deleteUser = async () => {
     try {
-      const response = await axios.delete("/api/auth/keys", {
-        data: { companyId: companyId, user: session },
+      const response = await axios.delete("/api/auth/profile", {
+        data: { userId: userId, user: session },
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${session.accessToken}`,
         },
       });
-
-      console.log(response.data);
       if (response.data) {
-        setMessage("Se elimino correctamente");
-
+        setMessage("El usuario se elimino correctamente");
         setTimeout(() => {
-          closeModal();
-          updateKeyInList();
-        }, "2000");
+          signOut();
+        }, "1000");
       }
     } catch (error) {
       console.error("Error during deleted:", error);
@@ -61,28 +52,28 @@ const DeleteCompanyPage = ({
               <div className="mt-3  sm:mt-0 sm:ml-4 sm:text-left w-full">
                 <div className="bg-white text-slate-500 md:px-8 px-4 py-6 max-w-md md:w-96 w-full mx-auto  rounded-lg">
                   {error && (
-                    <div className="bg-red-500 text-white p-2 mb-2 rounded-md">
+                    <div className="bg-red-400 text-white p-2 mb-2 rounded-md">
                       {error}
                     </div>
                   )}
                   {message && (
-                    <p className="message bg-green-500 text-white p-2 mb-2 rounded-md">
+                    <p className="message bg-green-400 text-white p-2 mb-2 rounded-md">
                       {message}
                     </p>
                   )}
                   <div className="text-center text-2xl">
                     <h1>
-                      Vamos a eliminar la compañia <strong>{company}</strong>
+                      Vamos a eliminar el Usuario <strong>{username}</strong>
                     </h1>
                     <p className="text-xl">
-                      se eliminaran tambien sus cuentas asociadas, desea
-                      confirmar la operacion?
+                      se eliminaran tambien sus Keys asociadas, desea confirmar
+                      la operacion?
                     </p>
                     <p className="text-lg">
                       esta acción no la podemos revertir!
                     </p>
                   </div>
-                  <div className="flex  items-center gap-4 md:w-80 w-auto text-sm md:py-6 py-10">
+                  <div className="flex items-center gap-4 md:w-80 w-auto text-sm md:py-6 py-10">
                     <button
                       onClick={closeModal}
                       className="flex-1 rounded-lg border border-indigo-500 bg-indigo-500 py-2.5 md:py-1.5 text-center text-sm font-semibold text-white shadow-sm transition-all hover:border-indigo-700 hover:bg-indigo-700 focus:ring focus:ring-indigo-200 disabled:cursor-not-allowed disabled:border-indigo-500 disabled:bg-indigo-500 disabled:opacity-80"
@@ -91,7 +82,7 @@ const DeleteCompanyPage = ({
                     </button>
                     <button
                       className="flex-1 rounded-lg border border-red-500 bg-red-500 py-2.5 md:py-1.5 text-center text-sm font-semibold text-white shadow-sm transition-all hover:border-red-700 hover:bg-red-700 focus:ring focus:ring-red-200 disabled:cursor-not-allowed disabled:border-red-500 disabled:bg-red-500 disabled:opacity-80"
-                      onClick={deleteAccount}
+                      onClick={deleteUser}
                     >
                       Eliminar
                     </button>
@@ -115,4 +106,4 @@ const DeleteCompanyPage = ({
   );
 };
 
-export default DeleteCompanyPage;
+export default DeleteProfilePage;

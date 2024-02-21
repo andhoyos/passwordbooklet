@@ -7,9 +7,11 @@ import axios from "axios";
 
 const DeleteAccountPage = () => {
   const [error, setError] = useState("");
+  const [message, setMessage] = useState("");
   const { data: session } = useSession();
   const router = useRouter();
   const params = useSearchParams();
+
   const searchAccountCompany = params.get("account");
   const searchAccountId = params.get("accountId");
   const searchCompany = params.get("company");
@@ -23,10 +25,12 @@ const DeleteAccountPage = () => {
           Authorization: `Bearer ${session.accessToken}`,
         },
       });
-
-      console.log(response.data);
-
-      router.push("/dashboard/keys");
+      if (response.data) {
+        setMessage("Datos actualizados correctamente");
+        setTimeout(() => {
+          router.push("/dashboard/keys");
+        }, "1000");
+      }
     } catch (error) {
       console.error("Error during deleted:", error);
       if (error.response?.data.message) {
@@ -43,19 +47,22 @@ const DeleteAccountPage = () => {
   return (
     <div className="flex flex-col gap-y-10 items-center justify-center mt-28">
       {error && (
-        <div className="bg-red-400 text-white p-2 mb-2 text-center rounded-md w-6/12">
-          {error}
-        </div>
+        <div className="bg-red-400 text-white p-2 mb-2 rounded-md">{error}</div>
+      )}
+      {message && (
+        <p className="message bg-green-400 text-white p-2 mb-2 rounded-md">
+          {message}
+        </p>
       )}
       <div className="text-center text-2xl">
         <h1>
           Vamos a eliminar la cuenta <strong>{searchAccountCompany}</strong>
         </h1>
         <p>
-          de <strong>{searchCompany} </strong> esta seguro?
+          de <strong>{searchCompany} </strong> está seguro?
         </p>
       </div>
-      <p>esta accion no la podemos revertir!</p>
+      <p>esta acción no la podemos revertir!</p>
       <div className="flex  items-center gap-4 w-80 text-sm md:py-6 py-10">
         <button
           onClick={handleCancel}

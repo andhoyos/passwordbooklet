@@ -7,6 +7,7 @@ import axios from "axios";
 
 const EditAccountPage = () => {
   const [error, setError] = useState("");
+  const [message, setMessage] = useState("");
   const { data: session } = useSession();
   const router = useRouter();
   const params = useSearchParams();
@@ -46,9 +47,12 @@ const EditAccountPage = () => {
         user: session,
       });
 
-      console.log(response.data);
-
-      router.push("/dashboard/keys");
+      if (response.data) {
+        setMessage("Datos actualizados correctamente");
+        setTimeout(() => {
+          router.push("/dashboard/keys");
+        }, "1000");
+      }
     } catch (error) {
       console.error("Error during updated:", error);
       if (error.response?.data.message) {
@@ -69,7 +73,16 @@ const EditAccountPage = () => {
         ref={formRef}
         className="bg-white text-slate-500 px-8 py-10 max-w-md  w-96 mx-auto shadow-lg  rounded-lg"
       >
-        {error && <div className="bg-red-500 text-white p-2 mb-2">{error}</div>}
+        {error && (
+          <div className="bg-red-400 text-white p-2 mb-2 rounded-md">
+            {error}
+          </div>
+        )}
+        {message && (
+          <p className="message bg-green-400 text-white p-2 mb-2 rounded-md">
+            {message}
+          </p>
+        )}
         <h1 className="md:text-3xl text-2xl font-bold  ">Account Edit</h1>
         <p className="md:text-2xl text-xl font-bold mb-7">{searchCompany}</p>
 

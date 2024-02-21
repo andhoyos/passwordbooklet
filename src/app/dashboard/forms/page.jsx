@@ -15,6 +15,7 @@ const KeyForm = () => {
 
   const { data: session } = useSession();
   const [error, setError] = useState("");
+  const [message, setMessage] = useState("");
   const [company, setCompany] = useState("");
   const router = useRouter();
 
@@ -53,13 +54,16 @@ const KeyForm = () => {
         ],
         user: session,
       });
-
-      console.log(response.data);
       // event.currentTarget.reset();
       if (formRef.current) {
         formRef.current.reset();
       }
-      router.push("/dashboard/keys");
+      if (response.data) {
+        setMessage("Los datos han sido guardados correctamente");
+        setTimeout(() => {
+          router.push("/dashboard/keys");
+        }, "1000");
+      }
     } catch (error) {
       console.error("Error during registration:", error);
       if (error.response?.data.message) {
@@ -81,6 +85,11 @@ const KeyForm = () => {
           <div className="bg-red-400 text-white p-2 mb-2 rounded-md">
             {error}
           </div>
+        )}
+        {message && (
+          <p className="message bg-green-400 text-white p-2 mb-2 rounded-md">
+            {message}
+          </p>
         )}
         <h1 className="md:text-3xl text-2xl font-bold mb-7">
           {isCompanyId ? "Update Key" : "New Key"}
