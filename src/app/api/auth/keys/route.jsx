@@ -2,7 +2,10 @@ import { NextResponse } from "next/server";
 import { connectDB } from "@/libs/mongodb";
 import Key from "@/models/Key";
 import User from "@/models/users";
+import { encryptSymmetric } from "@/helpers/encryption";
+import { decryptSymmetric } from "@/helpers/decryption";
 import { getServerSession } from "next-auth/next";
+const { WEB_CRYPTO } = process.env;
 
 export async function GET(request) {
   const session = await getServerSession({ request });
@@ -21,9 +24,31 @@ export async function GET(request) {
 
     const keys = await Key.find({ user: user._id });
 
-    console.log("esta es la data", keys);
+    const decryptedKeys = await Promise.all(
+      keys.map(async (key) => {
+        const decryptedAccounts = await Promise.all(
+          key.accounts.map(async (account) => {
+            const decryptedPassword = await decryptSymmetric(
+              account.password,
+              account.iv,
+              WEB_CRYPTO
+            );
+            return {
+              ...account.toJSON(),
+              password: decryptedPassword,
+            };
+          })
+        );
+        return {
+          ...key.toJSON(),
+          accounts: decryptedAccounts,
+        };
+      })
+    );
 
-    return NextResponse.json(keys);
+    console.log("esta es la data", decryptedKeys);
+
+    return NextResponse.json(decryptedKeys);
   } catch (error) {
     console.error("Error fetching keys:", error);
     return NextResponse.json(
@@ -45,8 +70,17 @@ export async function POST(request) {
   console.log(data);
 
   try {
+    for (const account of accounts) {
+      const encryptedPassword = await encryptSymmetric(
+        account.password,
+        WEB_CRYPTO
+      );
+      account.password = encryptedPassword.ciphertext;
+      account.iv = encryptedPassword.iv;
+    }
+
+    console.log("esto es accounts encriptado", accounts);
     await connectDB();
-    //si viene el id de la compañia agregamos una cuenta al array
     if (companyId) {
       const updateKey = await Key.findOneAndUpdate(
         { _id: companyId, user: session.user._id },
@@ -85,6 +119,13 @@ export async function PUT(request) {
   }
 
   try {
+    const updatedAccount = updatedData;
+    const encryptedPassword = await encryptSymmetric(
+      updatedAccount.password,
+      WEB_CRYPTO
+    );
+    updatedAccount.password = encryptedPassword.ciphertext;
+    updatedAccount.iv = encryptedPassword.iv;
     await connectDB();
     const key = await Key.findOneAndUpdate(
       {

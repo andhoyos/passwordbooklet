@@ -41,7 +41,7 @@ const KeyForm = () => {
       const account = formData.get("account");
       const password = formData.get("password");
 
-      if (!account || !password) {
+      if (!account || !password || !company) {
         setError("Por favor completa todos los campos");
         return;
       }
@@ -50,7 +50,11 @@ const KeyForm = () => {
         companyId: searchCompanyId,
         company: formData.get("company"),
         accounts: [
-          { name: formData.get("account"), password: formData.get("password") },
+          {
+            name: formData.get("account"),
+            password: formData.get("password"),
+            iv: "",
+          },
         ],
         user: session,
       });
