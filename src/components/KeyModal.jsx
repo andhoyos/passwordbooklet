@@ -1,9 +1,22 @@
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
+import { useState } from "react";
+import Image from "next/image";
+import lock from "./lock.svg";
+import unlock from "./unlock.svg";
 
 const KeyModal = ({ company, companyId, accounts, closeModal }) => {
   const { data: session } = useSession();
+  const [showPassword, setShowPassword] = useState({});
+
+  const toggleShowPassword = (accountId) => {
+    setShowPassword({
+      ...showPassword,
+      [accountId]: !showPassword[accountId],
+    });
+  };
+
   const router = useRouter();
   const handleNewAccount = (companyId, company) => {
     router.push(
@@ -61,12 +74,42 @@ const KeyModal = ({ company, companyId, accounts, closeModal }) => {
                       key={account._id}
                       className="text-gray-900 border-b-2 border-neutral-700 p-2"
                     >
-                      <div className="flex justify-between items-center text-left">
-                        <div>
+                      <div className="flex justify-between items-end text-left ">
+                        <div className="w-full">
                           <div>Usuario: {account.name}</div>
-                          <div>Contraseña: {account.password}</div>
+                          <div className="flex justify-between items-end">
+                            <p className="break-all">
+                              Contraseña:{" "}
+                              {showPassword[account._id]
+                                ? account.password
+                                : account.password.replace(/./g, "*")}
+                            </p>
+                            <button
+                              onClick={() => toggleShowPassword(account._id)}
+                              className="text-gray-600 hover:scale-110 duration-200 hover:cursor-pointer"
+                            >
+                              {showPassword[account._id] ? (
+                                <Image
+                                  title="Ocultar"
+                                  src={unlock}
+                                  width={30}
+                                  height={30}
+                                  alt="ocultar"
+                                />
+                              ) : (
+                                <Image
+                                  title="Mostrar"
+                                  src={lock}
+                                  width={30}
+                                  height={30}
+                                  alt="mostrar"
+                                />
+                              )}
+                            </button>
+                          </div>
                         </div>
-                        <div className="flex gap-2">
+
+                        <div className="flex gap-2 md:pl-5 pl-3 pb-1">
                           {/* <Link
                             href={`/dashboard/keys/${encodeURIComponent(
                               account._id
