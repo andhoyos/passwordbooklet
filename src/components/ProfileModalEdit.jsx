@@ -5,8 +5,9 @@ import axios from "axios";
 const ProfileModalEdit = ({ username, email, closeModal }) => {
   const { data: session } = useSession();
   const formRef = useRef(null);
-  const [error, setError] = useState("");
-  const [message, setMessage] = useState("");
+  const [message, setMessage] = useState({ type: "", content: "" });
+  const [showChangePassword, setShowChangePassword] = useState(false); // Estado para controlar si se debe mostrar el campo de entrada de contraseña
+  const [newPassword, setNewPassword] = useState(""); // Estado para almacenar la nueva contraseña
 
   const [datosFormulario, setDatosFormulario] = useState({
     username: username,
@@ -21,6 +22,10 @@ const ProfileModalEdit = ({ username, email, closeModal }) => {
     setDatosFormulario({ ...datosFormulario, email: nuevoEmail });
   };
 
+  const handleShowChangePassword = () => {
+    // Manejador de eventos para mostrar el campo de entrada de contraseña
+    setShowChangePassword(true);
+  };
   const handleSubmit = async (event) => {
     event.preventDefault();
 
@@ -29,14 +34,21 @@ const ProfileModalEdit = ({ username, email, closeModal }) => {
       const username = datosAEnviar.get("username");
       const email = datosAEnviar.get("email");
       if (!username || !email) {
-        setError("Por favor completa todos los campos");
+        setMessage({
+          type: "error",
+          content: "Por favor completa todos los campos",
+        });
         return;
       }
+
+      const updatedData = { username, email };
+
+      // Si se proporciona una nueva contraseña, agregarla a los datos actualizados
+      if (newPassword) {
+        updatedData.password = newPassword;
+      }
       const response = await axios.put("/api/auth/profile", {
-        updatedData: {
-          username: username,
-          email: email,
-        },
+        updatedData,
         user: session,
       });
 
@@ -45,18 +57,22 @@ const ProfileModalEdit = ({ username, email, closeModal }) => {
       console.log(response.data);
 
       if (response.data) {
-        setMessage("Datos actualizados correctamente");
+        setMessage({
+          type: "success",
+          content: "Datos actualizados correctamente",
+        });
 
         setTimeout(() => {
+          setMessage({ type: "", content: "" });
           closeModal();
-        }, "2000");
+        }, 2000);
       }
     } catch (error) {
       console.error("Error during updated:", error);
       if (error.response?.data.message) {
-        setError(error.response.data.message);
+        setMessage({ type: "error", content: error.response.data.message });
       } else {
-        setError("An error occurred");
+        setMessage({ type: "error", content: "An error occurred" });
       }
     }
   };
@@ -83,15 +99,14 @@ const ProfileModalEdit = ({ username, email, closeModal }) => {
                   ref={formRef}
                   className="bg-white text-slate-500 md:px-8 px-4 py-6 max-w-md md:w-96 w-full mx-auto  rounded-lg"
                 >
-                  {error && (
-                    <div className="bg-red-500 text-white p-2 mb-2 rounded-md">
-                      {error}
+                  {message.content && (
+                    <div
+                      className={`bg-${
+                        message.type === "error" ? "red" : "green"
+                      }-400 text-white p-2 mb-2 rounded-md`}
+                    >
+                      {message.content}
                     </div>
-                  )}
-                  {message && (
-                    <p className="message bg-green-500 text-white p-2 mb-2 rounded-md">
-                      {message}
-                    </p>
                   )}
                   <h1 className="text-3xl font-bold py-2">Profile Edit</h1>
 
@@ -112,6 +127,24 @@ const ProfileModalEdit = ({ username, email, closeModal }) => {
                     onChange={handleChangeEmail}
                     className="bg-slate-100 px-4 py-2 block mb-2 w-full"
                   />
+                  <p
+                    onClick={handleShowChangePassword}
+                    className="cursor-pointer rounded-lg border border-green-500 bg-green-500 py-2.5 md:py-1.5 text-center text-sm font-semibold text-white shadow-sm transition-all hover:border-green-700 hover:bg-green-700 focus:ring focus:ring-green-200 disabled:cursor-not-allowed disabled:border-green-500 disabled:bg-green-500 disabled:opacity-80"
+                  >
+                    Cambiar contraseña
+                  </p>
+                  {showChangePassword && (
+                    <div className="mb-2">
+                      <label className="text-slate-400">New Password:</label>
+                      <input
+                        type="password"
+                        name="newPassword"
+                        value={newPassword}
+                        onChange={(e) => setNewPassword(e.target.value)}
+                        className="bg-slate-100 px-4 py-2 block w-full"
+                      />
+                    </div>
+                  )}
 
                   <div className="flex  items-center gap-4 md:w-80 w-full text-sm md:py-6 py-10">
                     <button

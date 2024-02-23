@@ -14,8 +14,7 @@ const KeyForm = () => {
   const companyNameReadonly = isCompanyId;
 
   const { data: session } = useSession();
-  const [error, setError] = useState("");
-  const [message, setMessage] = useState("");
+  const [message, setMessage] = useState({ type: "", content: "" });
   const [company, setCompany] = useState("");
   const router = useRouter();
 
@@ -42,7 +41,10 @@ const KeyForm = () => {
       const password = formData.get("password");
 
       if (!account || !password || !company) {
-        setError("Por favor completa todos los campos");
+        setMessage({
+          type: "error",
+          content: "Por favor completa todos los campos",
+        });
         return;
       }
 
@@ -63,17 +65,21 @@ const KeyForm = () => {
         formRef.current.reset();
       }
       if (response.data) {
-        setMessage("Los datos han sido guardados correctamente");
+        setMessage({
+          type: "success",
+          content: "Los datos han sido guardados correctamente",
+        });
         setTimeout(() => {
+          setMessage({ type: "", content: "" });
           router.push("/dashboard/keys");
         }, "1000");
       }
     } catch (error) {
       console.error("Error during registration:", error);
       if (error.response?.data.message) {
-        setError(error.response.data.message);
+        setMessage({ type: "error", content: error.response.data.message });
       } else {
-        setError("An error occurred");
+        setMessage({ type: "error", content: "An error occurred" });
       }
     }
   };
@@ -85,15 +91,14 @@ const KeyForm = () => {
         ref={formRef}
         className="bg-white text-slate-500 px-8 py-10 max-w-md  w-96 mx-auto shadow-lg  rounded-lg"
       >
-        {error && (
-          <div className="bg-red-400 text-white p-2 mb-2 rounded-md">
-            {error}
+        {message.content && (
+          <div
+            className={`bg-${
+              message.type === "error" ? "red" : "green"
+            }-400 text-white p-2 mb-2 rounded-md`}
+          >
+            {message.content}
           </div>
-        )}
-        {message && (
-          <p className="message bg-green-400 text-white p-2 mb-2 rounded-md">
-            {message}
-          </p>
         )}
         <h1 className="md:text-3xl text-2xl font-bold mb-7">
           {isCompanyId ? "Update Key" : "New Key"}

@@ -3,10 +3,10 @@ import { FormEvent, useState } from "react";
 import axios, { AxiosError } from "axios";
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
+import { generateRSAKeyPair } from "@/helpers/createKey";
 
 function RegisterPage() {
-  const [error, setError] = useState("");
-  const [message, setMessage] = useState("");
+  const [message, setMessage] = useState({ type: "", content: "" });
   const router = useRouter();
 
   const handleSubmit = async (event) => {
@@ -14,6 +14,12 @@ function RegisterPage() {
 
     try {
       const formData = new FormData(event.currentTarget);
+
+      // Generar clave RSA
+      const rsaKeyPair = await generateRSAKeyPair();
+
+      console.log(rsaKeyPair);
+
       const response = await axios.post("/api/auth/signup", {
         username: formData.get("username"),
         email: formData.get("email"),
@@ -21,17 +27,21 @@ function RegisterPage() {
       });
 
       if (response.data) {
-        setMessage("Usuario registrado correctamente");
+        setMessage({
+          type: "success",
+          content: "Usuario registrado correctamente",
+        });
         setTimeout(() => {
+          setMessage({ type: "", content: "" });
           router.push("/login");
         }, "1000");
       }
     } catch (error) {
       console.error("Error during registration:", error);
       if (error.response?.data.message) {
-        setError(error.response.data.message);
+        setMessage({ type: "error", content: error.response.data.message });
       } else {
-        setError("An error occurred");
+        setMessage({ type: "error", content: "An error occurred" });
       }
     }
   };
@@ -42,15 +52,14 @@ function RegisterPage() {
         onSubmit={handleSubmit}
         className="bg-white text-slate-500 px-8 py-10 max-w-md w-96 mx-auto shadow-lg  rounded-lg"
       >
-        {error && (
-          <div className="bg-red-400 text-white p-2 mb-2 rounded-md">
-            {error}
+        {message.content && (
+          <div
+            className={`bg-${
+              message.type === "error" ? "red" : "green"
+            }-400 text-white p-2 mb-2 rounded-md`}
+          >
+            {message.content}
           </div>
-        )}
-        {message && (
-          <p className="message bg-green-400 text-white p-2 mb-2 rounded-md">
-            {message}
-          </p>
         )}
         <h1 className="md:text-3xl text-2xl font-bold mb-7 ">Signup</h1>
 

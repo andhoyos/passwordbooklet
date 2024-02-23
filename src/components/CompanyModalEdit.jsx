@@ -10,8 +10,7 @@ const CompanyModalEdit = ({
 }) => {
   const { data: session } = useSession();
   const formRef = useRef(null);
-  const [error, setError] = useState("");
-  const [message, setMessage] = useState("");
+  const [message, setMessage] = useState({ type: "", content: "" });
 
   const [datosFormulario, setDatosFormulario] = useState({
     company: company,
@@ -28,7 +27,10 @@ const CompanyModalEdit = ({
       const datosAEnviar = new FormData(event.target);
       const company = datosAEnviar.get("company");
       if (!company) {
-        setError("Por favor completa todos los campos");
+        setMessage({
+          type: "error",
+          content: "Por favor completa todos los campos",
+        });
         return;
       }
       const response = await axios.patch("/api/auth/keys", {
@@ -42,19 +44,23 @@ const CompanyModalEdit = ({
       console.log(response.data);
 
       if (response.data) {
-        setMessage("Datos actualizados correctamente");
+        setMessage({
+          type: "success",
+          content: "Datos actualizados correctamente",
+        });
 
         setTimeout(() => {
+          setMessage({ type: "", content: "" });
           closeModal();
           updateKeyInList();
-        }, "2000");
+        }, "1000");
       }
     } catch (error) {
       console.error("Error during updated:", error);
       if (error.response?.data.message) {
-        setError(error.response.data.message);
+        setMessage({ type: "error", content: error.response.data.message });
       } else {
-        setError("An error occurred");
+        setMessage({ type: "error", content: "An error occurred" });
       }
     }
   };
@@ -81,15 +87,14 @@ const CompanyModalEdit = ({
                   ref={formRef}
                   className="bg-white text-slate-500 md:px-8 px-4 py-6 max-w-md md:w-96 w-full mx-auto  rounded-lg"
                 >
-                  {error && (
-                    <div className="bg-red-500 text-white p-2 mb-2 rounded-md">
-                      {error}
+                  {message.content && (
+                    <div
+                      className={`bg-${
+                        message.type === "error" ? "red" : "green"
+                      }-400 text-white p-2 mb-2 rounded-md`}
+                    >
+                      {message.content}
                     </div>
-                  )}
-                  {message && (
-                    <p className="message bg-green-500 text-white p-2 mb-2 rounded-md">
-                      {message}
-                    </p>
                   )}
                   <h1 className="text-3xl font-bold py-2">Company Edit</h1>
 

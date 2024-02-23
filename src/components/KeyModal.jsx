@@ -26,15 +26,13 @@ const KeyModal = ({ company, companyId, accounts, closeModal }) => {
     );
   };
 
-  const handleEditAccount = (accountId, account, accountPassword, company) => {
+  const handleEditAccount = (accountId, account, company) => {
     router.push(
       `/dashboard/keys/accounts/edit-account-page?accountId=${encodeURIComponent(
         accountId
-      )}&account=${encodeURIComponent(
-        account
-      )}&accountPassword=${encodeURIComponent(
-        accountPassword
-      )}&company=${encodeURIComponent(company)}`
+      )}&account=${encodeURIComponent(account)}&company=${encodeURIComponent(
+        company
+      )}`
     );
   };
 
@@ -49,7 +47,7 @@ const KeyModal = ({ company, companyId, accounts, closeModal }) => {
   };
   return (
     <div className="fixed z-10 inset-0 overflow-y-auto">
-      <div className="flex items-end justify-center  pt-56 px-4 pb-20 text-center sm:block sm:p-0">
+      <div className="flex items-end justify-center pt-32 px-4 pb-20 text-center sm:block sm:p-0">
         <div className="fixed inset-0 transition-opacity" aria-hidden="true">
           <div className="absolute inset-0 bg-gray-500 opacity-75"></div>
         </div>
@@ -134,7 +132,6 @@ const KeyModal = ({ company, companyId, accounts, closeModal }) => {
                               handleEditAccount(
                                 account._id,
                                 account.name,
-                                account.password,
                                 company
                               )
                             }

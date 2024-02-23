@@ -103,7 +103,7 @@ function KeysPage() {
               colors[colorIndex++ % colors.length]
             } p-5 transition relative duration-300 cursor-pointer hover:translate-y-[3px] hover:shadow-[0_-8px_0px_0px_red]`}
           >
-            <p className="cursor-pointer text-2xl">{key.company}</p>
+            <p className="cursor-pointer text-xl">{key.company}</p>
             <p>
               {key.accounts.length}{" "}
               {key.accounts.length === 1 ? "cuenta" : "cuentas"}

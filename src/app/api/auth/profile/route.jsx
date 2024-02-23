@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { connectDB } from "@/libs/mongodb";
 import User from "@/models/users";
+import bcrypt from "bcryptjs";
 
 export async function PUT(request) {
   const data = await request.json();
@@ -12,7 +13,14 @@ export async function PUT(request) {
   }
 
   try {
+    if (updatedData.password) {
+      const updatedUser = updatedData;
+      const hashedPassword = await bcrypt.hash(updatedData.password, 12);
+      updatedUser.password = hashedPassword;
+    }
+
     await connectDB();
+
     const userUpdate = await User.findOneAndUpdate(
       {
         _id: session.user._id,
@@ -21,6 +29,9 @@ export async function PUT(request) {
         $set: {
           username: updatedData.username,
           email: updatedData.email,
+          ...(updatedData.password && {
+            password: updatedData.password,
+          }),
         },
       },
       { new: true }

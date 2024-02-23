@@ -4,10 +4,10 @@ import axios from "axios";
 
 const DeleteProfilePage = ({ username, userId, closeModal }) => {
   const { data: session } = useSession();
-  const [error, setError] = useState("");
-  const [message, setMessage] = useState("");
+  const [message, setMessage] = useState({ type: "", content: "" });
 
   const deleteUser = async () => {
+    console.log("esta es la session", session);
     try {
       const response = await axios.delete("/api/auth/profile", {
         data: { userId: userId, user: session },
@@ -17,17 +17,21 @@ const DeleteProfilePage = ({ username, userId, closeModal }) => {
         },
       });
       if (response.data) {
-        setMessage("El usuario se elimino correctamente");
+        setMessage({
+          type: "success",
+          content: "El usuario se elimino correctamente",
+        });
         setTimeout(() => {
+          setMessage({ type: "", content: "" });
           signOut();
         }, "1000");
       }
     } catch (error) {
       console.error("Error during deleted:", error);
       if (error.response?.data.message) {
-        setError(error.response.data.message);
+        setMessage({ type: "error", content: error.response.data.message });
       } else {
-        setError("An error occurred");
+        setMessage({ type: "error", content: "An error occurred" });
       }
     }
   };
@@ -51,15 +55,14 @@ const DeleteProfilePage = ({ username, userId, closeModal }) => {
             <div className="sm:flex sm:items-start">
               <div className="mt-3  sm:mt-0 sm:ml-4 sm:text-left w-full">
                 <div className="bg-white text-slate-500 md:px-8 px-4 py-6 max-w-md md:w-96 w-full mx-auto  rounded-lg">
-                  {error && (
-                    <div className="bg-red-400 text-white p-2 mb-2 rounded-md">
-                      {error}
+                  {message.content && (
+                    <div
+                      className={`bg-${
+                        message.type === "error" ? "red" : "green"
+                      }-400 text-white p-2 mb-2 rounded-md`}
+                    >
+                      {message.content}
                     </div>
-                  )}
-                  {message && (
-                    <p className="message bg-green-400 text-white p-2 mb-2 rounded-md">
-                      {message}
-                    </p>
                   )}
                   <div className="text-center text-2xl">
                     <h1>

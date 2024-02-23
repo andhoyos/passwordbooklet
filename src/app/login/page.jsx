@@ -4,7 +4,7 @@ import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
 
 function LoginPage() {
-  const [error, setError] = useState("");
+  const [message, setMessage] = useState({ type: "", content: "" });
   const router = useRouter();
 
   const handleSubmit = async (event) => {
@@ -16,7 +16,7 @@ function LoginPage() {
       redirect: false,
     });
 
-    if (res.error) setError(res.error);
+    if (res.error) setMessage({ type: "error", content: res.error });
 
     if (res?.ok) return router.push("/dashboard/keys");
   };
@@ -27,9 +27,13 @@ function LoginPage() {
         onSubmit={handleSubmit}
         className="bg-white  text-slate-500 px-8 py-10 max-w-md  w-96 mx-auto shadow-lg  rounded-lg"
       >
-        {error && (
-          <div className="bg-red-400 text-white p-2 mb-2 rounded-md">
-            {error}
+        {message.content && (
+          <div
+            className={`bg-${
+              message.type === "error" ? "red" : "green"
+            }-400 text-white p-2 mb-2 rounded-md`}
+          >
+            {message.content}
           </div>
         )}
         <h1 className="md:text-3xl text-2xl font-bold mb-7">Signin</h1>

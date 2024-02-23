@@ -6,8 +6,7 @@ import { useState } from "react";
 import axios from "axios";
 
 const DeleteAccountPage = () => {
-  const [error, setError] = useState("");
-  const [message, setMessage] = useState("");
+  const [message, setMessage] = useState({ type: "", content: "" });
   const { data: session } = useSession();
   const router = useRouter();
   const params = useSearchParams();
@@ -26,17 +25,21 @@ const DeleteAccountPage = () => {
         },
       });
       if (response.data) {
-        setMessage("Datos actualizados correctamente");
+        setMessage({
+          type: "success",
+          content: "Los datos han sido actualizados correctamente",
+        });
         setTimeout(() => {
+          setMessage({ type: "", content: "" });
           router.push("/dashboard/keys");
         }, "1000");
       }
     } catch (error) {
       console.error("Error during deleted:", error);
       if (error.response?.data.message) {
-        setError(error.response.data.message);
+        setMessage({ type: "error", content: error.response.data.message });
       } else {
-        setError("An error occurred");
+        setMessage({ type: "error", content: "An error occurred" });
       }
     }
   };
@@ -46,13 +49,14 @@ const DeleteAccountPage = () => {
 
   return (
     <div className="flex flex-col gap-y-10 items-center justify-center mt-28">
-      {error && (
-        <div className="bg-red-400 text-white p-2 mb-2 rounded-md">{error}</div>
-      )}
-      {message && (
-        <p className="message bg-green-400 text-white p-2 mb-2 rounded-md">
-          {message}
-        </p>
+      {message.content && (
+        <div
+          className={`bg-${
+            message.type === "error" ? "red" : "green"
+          }-400 text-white p-2 mb-2 rounded-md`}
+        >
+          {message.content}
+        </div>
       )}
       <div className="text-center text-2xl">
         <h1>

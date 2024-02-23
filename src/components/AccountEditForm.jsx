@@ -14,7 +14,7 @@ export default function AccountEditForm({
   idCuenta,
 }) {
   const { data: session } = useSession();
-  const [error, setError] = useState("");
+  const [message, setMessage] = useState({ type: "", content: "" });
   const router = useRouter();
 
   console.log(session);
@@ -24,7 +24,6 @@ export default function AccountEditForm({
   const [datosFormulario, setDatosFormulario] = useState({
     usuario: usuario,
     contrasena: contrasena,
-    idCuenta: idCuenta,
   });
 
   const handleChangeUsuario = (nuevoUsuario) => {
@@ -51,7 +50,7 @@ export default function AccountEditForm({
 
       const response = await axios.put("/api/auth/keys", {
         companyId: companyId,
-        accountId: datosFormulario.idCuenta,
+        accountId: idCuenta,
         updatedData: {
           name: nombre,
           password: contrasena,
@@ -67,9 +66,9 @@ export default function AccountEditForm({
     } catch (error) {
       console.error("Error during updating:", error);
       if (error.response?.data.message) {
-        setError(error.response.data.message);
+        setMessage({ type: "error", content: error.response.data.message });
       } else {
-        setError("An error occurred");
+        setMessage({ type: "error", content: "An error occurred" });
       }
     }
   };
@@ -81,16 +80,17 @@ export default function AccountEditForm({
         ref={formRef}
         className="bg-white px-8 py-10 max-w-md  w-96 mx-auto shadow-lg  rounded-lg"
       >
-        {error && <div className="bg-red-500 text-white p-2 mb-2">{error}</div>}
+        {message.content && (
+          <div
+            className={`bg-${
+              message.type === "error" ? "red" : "green"
+            }-400 text-white p-2 mb-2 rounded-md`}
+          >
+            {message.content}
+          </div>
+        )}
         <h1 className="text-4xl font-bold  text-slate-700">Account Edit</h1>
         <p className="text-2xl font-bold mb-7 text-slate-700">{company}</p>
-        <input
-          type="text"
-          name="idAccount"
-          defaultValue={datosFormulario.idCuenta}
-          readOnly
-          className="bg-slate-100 px-4 py-2  mb-2 w-full hidden"
-        />
 
         <label className="text-slate-500">Cuenta:</label>
         <input
