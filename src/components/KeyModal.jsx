@@ -86,7 +86,7 @@ const KeyModal = ({ company, companyId, accounts, closeModal }) => {
                             </p>
                             <button
                               onClick={() => toggleShowPassword(account._id)}
-                              className="text-gray-600 hover:scale-110 duration-200 hover:cursor-pointer"
+                              className="text-gray-600 hover:scale-110 duration-200 hover:cursor-pointer min-w-fit"
                             >
                               {showPassword[account._id] ? (
                                 <Image

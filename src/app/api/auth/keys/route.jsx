@@ -119,13 +119,15 @@ export async function PUT(request) {
   }
 
   try {
-    const updatedAccount = updatedData;
-    const encryptedPassword = await encryptSymmetric(
-      updatedAccount.password,
-      WEB_CRYPTO
-    );
-    updatedAccount.password = encryptedPassword.ciphertext;
-    updatedAccount.iv = encryptedPassword.iv;
+    if (updatedData.password) {
+      const updatedAccount = updatedData;
+      const encryptedPassword = await encryptSymmetric(
+        updatedAccount.password,
+        WEB_CRYPTO
+      );
+      updatedAccount.password = encryptedPassword.ciphertext;
+      updatedAccount.iv = encryptedPassword.iv;
+    }
     await connectDB();
     const key = await Key.findOneAndUpdate(
       {
@@ -134,7 +136,11 @@ export async function PUT(request) {
       },
       {
         $set: {
-          "accounts.$": updatedData,
+          "accounts.$.name": updatedData.name,
+          ...(updatedData.password && {
+            "accounts.$.password": updatedData.password,
+            "accounts.$.iv": updatedData.iv,
+          }),
         },
       },
       { new: true }

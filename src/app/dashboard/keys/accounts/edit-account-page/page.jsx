@@ -38,12 +38,24 @@ const EditAccountPage = () => {
       const datosAEnviar = new FormData(event.target);
       const accountName = datosAEnviar.get("account");
       const accountPassword = datosAEnviar.get("password");
+
+      let newData;
+
+      {
+        accountPassword != ""
+          ? (newData = {
+              name: accountName,
+              password: accountPassword,
+              iv: "",
+            })
+          : (newData = {
+              name: accountName,
+            });
+      }
+
       const response = await axios.put("/api/auth/keys", {
         accountId: searchAccountId,
-        updatedData: {
-          name: accountName,
-          password: accountPassword,
-        },
+        updatedData: newData,
         user: session,
       });
 
@@ -97,7 +109,7 @@ const EditAccountPage = () => {
 
         <label className="text-slate-400">Password:</label>
         <input
-          type="text"
+          type="password"
           name="password"
           defaultValue={datosFormulario.accountPassword}
           onChange={handleChangePassword}
