@@ -6,6 +6,9 @@ const DeleteProfilePage = ({ username, userId, closeModal }) => {
   const { data: session } = useSession();
   const [message, setMessage] = useState({ type: "", content: "" });
 
+  const bgError = "bg-red-400";
+  const bgSuccess = "bg-green-400";
+
   const deleteUser = async () => {
     console.log("esta es la session", session);
     try {
@@ -57,9 +60,9 @@ const DeleteProfilePage = ({ username, userId, closeModal }) => {
                 <div className="bg-white text-slate-500 md:px-8 px-4 py-6 max-w-md md:w-96 w-full mx-auto  rounded-lg">
                   {message.content && (
                     <div
-                      className={`bg-${
-                        message.type === "error" ? "red" : "green"
-                      }-400 text-white p-2 mb-2 rounded-md`}
+                      className={`${
+                        message.type === "error" ? `${bgError}` : `${bgSuccess}`
+                      } text-white p-2 mb-2 rounded-md`}
                     >
                       {message.content}
                     </div>

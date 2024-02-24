@@ -16,6 +16,9 @@ const CompanyModalEdit = ({
     company: company,
   });
 
+  const bgError = "bg-red-400";
+  const bgSuccess = "bg-green-400";
+
   const handleChangeCompany = (nuevaCompany) => {
     setDatosFormulario({ ...datosFormulario, company: nuevaCompany });
   };
@@ -89,9 +92,9 @@ const CompanyModalEdit = ({
                 >
                   {message.content && (
                     <div
-                      className={`bg-${
-                        message.type === "error" ? "red" : "green"
-                      }-400 text-white p-2 mb-2 rounded-md`}
+                      className={`${
+                        message.type === "error" ? `${bgError}` : `${bgSuccess}`
+                      } text-white p-2 mb-2 rounded-md`}
                     >
                       {message.content}
                     </div>

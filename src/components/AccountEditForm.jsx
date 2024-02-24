@@ -26,6 +26,9 @@ export default function AccountEditForm({
     contrasena: contrasena,
   });
 
+  const bgError = "bg-red-400";
+  const bgSuccess = "bg-green-400";
+
   const handleChangeUsuario = (nuevoUsuario) => {
     setDatosFormulario({ ...datosFormulario, usuario: nuevoUsuario });
   };
@@ -82,9 +85,9 @@ export default function AccountEditForm({
       >
         {message.content && (
           <div
-            className={`bg-${
-              message.type === "error" ? "red" : "green"
-            }-400 text-white p-2 mb-2 rounded-md`}
+            className={`${
+              message.type === "error" ? `${bgError}` : `${bgSuccess}`
+            } text-white p-2 mb-2 rounded-md`}
           >
             {message.content}
           </div>

@@ -20,6 +20,9 @@ const KeyForm = () => {
 
   const formRef = useRef(null);
 
+  const bgError = "bg-red-400";
+  const bgSuccess = "bg-green-400";
+
   useEffect(() => {
     if (searchCompanyName) {
       setCompany(searchCompanyName);
@@ -93,9 +96,9 @@ const KeyForm = () => {
       >
         {message.content && (
           <div
-            className={`bg-${
-              message.type === "error" ? "red" : "green"
-            }-400 text-white p-2 mb-2 rounded-md`}
+            className={`${
+              message.type === "error" ? `${bgError}` : `${bgSuccess}`
+            } text-white p-2 mb-2 rounded-md`}
           >
             {message.content}
           </div>

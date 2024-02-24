@@ -8,6 +8,9 @@ function RegisterPage() {
   const [message, setMessage] = useState({ type: "", content: "" });
   const router = useRouter();
 
+  const bgError = "bg-red-400";
+  const bgSuccess = "bg-green-400";
+
   const handleSubmit = async (event) => {
     event.preventDefault();
 
@@ -48,9 +51,9 @@ function RegisterPage() {
       >
         {message.content && (
           <div
-            className={`bg-${
-              message.type === "error" ? "red" : "green"
-            }-400 text-white p-2 mb-2 rounded-md`}
+            className={`${
+              message.type === "error" ? `${bgError}` : `${bgSuccess}`
+            } text-white p-2 mb-2 rounded-md`}
           >
             {message.content}
           </div>

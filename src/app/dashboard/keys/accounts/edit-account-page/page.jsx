@@ -22,6 +22,9 @@ const EditAccountPage = () => {
     account: searchAccount,
   });
 
+  const bgError = "bg-red-400";
+  const bgSuccess = "bg-green-400";
+
   const handleChangeAccount = (newAccount) => {
     setDatosFormulario({ ...datosFormulario, account: newAccount });
   };
@@ -31,6 +34,14 @@ const EditAccountPage = () => {
     try {
       const datosAEnviar = new FormData(event.target);
       const accountName = datosAEnviar.get("account");
+
+      if (!accountName) {
+        setMessage({
+          type: "error",
+          content: "Por favor completa todos los campos",
+        });
+        return;
+      }
 
       const updatedData = { name: accountName };
 
@@ -78,9 +89,9 @@ const EditAccountPage = () => {
       >
         {message.content && (
           <div
-            className={`bg-${
-              message.type === "error" ? "red" : "green"
-            }-400 text-white p-2 mb-2 rounded-md`}
+            className={`${
+              message.type === "error" ? `${bgError}` : `${bgSuccess}`
+            } text-white p-2 mb-2 rounded-md`}
           >
             {message.content}
           </div>

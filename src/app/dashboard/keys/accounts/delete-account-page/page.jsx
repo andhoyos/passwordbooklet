@@ -15,6 +15,9 @@ const DeleteAccountPage = () => {
   const searchAccountId = params.get("accountId");
   const searchCompany = params.get("company");
 
+  const bgError = "bg-red-400";
+  const bgSuccess = "bg-green-400";
+
   const deleteAccount = async () => {
     try {
       const response = await axios.delete("/api/auth/keys", {
@@ -51,9 +54,9 @@ const DeleteAccountPage = () => {
     <div className="flex flex-col gap-y-10 items-center justify-center mt-28">
       {message.content && (
         <div
-          className={`bg-${
-            message.type === "error" ? "red" : "green"
-          }-400 text-white p-2 mb-2 rounded-md`}
+          className={`${
+            message.type === "error" ? `${bgError}` : `${bgSuccess}`
+          } text-white p-2 mb-2 rounded-md`}
         >
           {message.content}
         </div>

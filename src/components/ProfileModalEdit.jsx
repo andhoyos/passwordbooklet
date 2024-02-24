@@ -14,6 +14,9 @@ const ProfileModalEdit = ({ username, email, closeModal }) => {
     email: email,
   });
 
+  const bgError = "bg-red-400";
+  const bgSuccess = "bg-green-400";
+
   const handleChangeUsername = (nuevoUsername) => {
     setDatosFormulario({ ...datosFormulario, username: nuevoUsername });
   };
@@ -101,9 +104,9 @@ const ProfileModalEdit = ({ username, email, closeModal }) => {
                 >
                   {message.content && (
                     <div
-                      className={`bg-${
-                        message.type === "error" ? "red" : "green"
-                      }-400 text-white p-2 mb-2 rounded-md`}
+                      className={`${
+                        message.type === "error" ? `${bgError}` : `${bgSuccess}`
+                      } text-white p-2 mb-2 rounded-md`}
                     >
                       {message.content}
                     </div>
