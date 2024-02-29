@@ -12,7 +12,9 @@ function LoginPage() {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+
     const formData = new FormData(event.currentTarget);
+
     const res = await signIn("credentials", {
       username: formData.get("username"),
       password: formData.get("password"),
@@ -39,7 +41,7 @@ function LoginPage() {
             {message.content}
           </div>
         )}
-        <h1 className="md:text-3xl text-2xl font-bold mb-7">Signin</h1>
+        <h1 className="md:text-3xl text-2xl font-bold mb-7">Sign in</h1>
 
         <label className="text-slate-400">Username:</label>
         <input
@@ -57,7 +59,7 @@ function LoginPage() {
           name="password"
         />
         <p className="text-right">
-          <a className="font-semibold" href="/register">
+          <a className="font-semibold" href="/forgot-password">
             Forgot Password ?
           </a>
         </p>
