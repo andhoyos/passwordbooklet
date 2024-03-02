@@ -57,6 +57,51 @@ export async function PUT(request) {
   }
 }
 
+export async function PATCH(request) {
+  const data = await request.json();
+  const { phoneNumber, user } = data;
+  const session = user;
+
+  if (!session?.user) {
+    return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
+  }
+
+  try {
+    await connectDB();
+
+    const userUpdate = await User.findOneAndUpdate(
+      {
+        _id: session.user._id,
+      },
+      {
+        $set: {
+          phoneNumber: phoneNumber,
+          twoFactorAuthEnabled: true,
+        },
+      },
+      { new: true }
+    );
+
+    if (!userUpdate) {
+      return NextResponse.json({ message: "user  not found" }, { status: 404 });
+    }
+
+    session.user = userUpdate;
+
+    return NextResponse.json(userUpdate, {
+      headers: {
+        "set-cookie": session.cookie,
+      },
+    });
+  } catch (error) {
+    console.error("Error updating twoFactor:", error);
+    return NextResponse.json(
+      { message: "Internal Server Error" },
+      { status: 500 }
+    );
+  }
+}
+
 export async function DELETE(request) {
   const data = await request.json();
   const { userId, user } = data;
