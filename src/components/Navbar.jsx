@@ -71,11 +71,11 @@ export default function Navbar() {
                   </li>
                   <li>
                     <Link
-                      href="#"
+                      href="/dashboard/twoFactorAuth"
                       className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
                       onClick={handleItemClick}
                     >
-                      Earnings
+                      Two Factor
                     </Link>
                   </li>
                 </ul>
