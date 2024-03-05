@@ -10,12 +10,26 @@ export async function POST(request) {
       process.env.TWILIO_ACCOUNT_SID,
       process.env.TWILIO_AUTH_TOKEN
     );
-    client.verify.v2
+    const verification_check = await client.verify.v2
       .services(process.env.TWILIO_SERVICE_SID)
-      .verificationChecks.create({ to: `+${phoneNumberVerification}`, code: verificationCode })
-      .then((verification_check) => console.log(verification_check.status));
+      .verificationChecks.create({
+        to: `${phoneNumberVerification}`,
+        code: verificationCode,
+      });
 
-    return NextResponse.json({ message: "Verification code successfully" });
+    console.log(verification_check.status);
+
+    if (verification_check.status === "approved") {
+      return NextResponse.json({
+        message: "Verification code approved",
+        status: 200,
+      });
+    } else {
+      return NextResponse.json({
+        message: "Verification code not approved",
+        status: 401,
+      });
+    }
   } catch (error) {
     console.error("Error verification code:", error);
     return NextResponse.json({ message: "Error verification code" });

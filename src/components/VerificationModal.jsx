@@ -1,13 +1,17 @@
 import { useSession } from "next-auth/react";
-import { useState} from "react";
+import { useState } from "react";
+import { useRouter } from "next/navigation";
 import axios from "axios";
 
-const VerificationModalCode = ({  phoneNumber}) => {
+const VerificationModalCode = ({ phoneNumber, closeModal }) => {
   const { data: session } = useSession();
   const [message, setMessage] = useState({ type: "", content: "" });
+  const [phoneNumberUpdate, setPhoneNumberUpdate] = useState("");
+
+  const router = useRouter();
 
   const bgError = "bg-red-400";
-  const bgSuccess = "bg-green-400";  
+  const bgSuccess = "bg-green-400";
 
   const handleVerificationSubmit = async (event) => {
     event.preventDefault();
@@ -21,19 +25,41 @@ const VerificationModalCode = ({  phoneNumber}) => {
       return;
     }
     try {
+      setPhoneNumberUpdate(phoneNumber);
       const response = await axios.post("/api/auth/verification-code", {
         verificationCode,
-        phoneNumberVerification:phoneNumber
+        phoneNumberVerification: phoneNumber,
       });
 
-      if (response.data) {
-        // Cerrar el modal de verificación
+      // 9d93f8748d0d4a
+      if (response.data.status === 200) {
         setMessage({
           type: "success",
-          content: "Se verifico correctamente",
+          content: response.data.message,
         });
-        // Realizar la acción de guardar el número de teléfono en la base de datos
-        // Puedes hacer esto llamando a la función handleSubmit nuevamente con los datos necesarios
+        // Realiza la acción de guardar el número de teléfono en la base de datos
+        const responseUpdate = await axios.patch("/api/auth/profile", {
+          phoneNumber: phoneNumberUpdate,
+          user: session,
+        });
+
+        if (responseUpdate.data) {
+          setMessage({
+            type: "success",
+            content:
+              "la proxima vez que inicies session te pediremos el codigo de verificacion",
+          });
+          setTimeout(() => {
+            setMessage({ type: "", content: "" });
+            closeModal();
+            router.push("/dashboard/profile");
+          }, "2000");
+        }
+      } else {
+        setMessage({
+          type: "error",
+          content: response.data.message,
+        });
       }
     } catch (error) {
       console.error("Error during verification:", error);
