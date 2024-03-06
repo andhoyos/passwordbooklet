@@ -1,5 +1,5 @@
 import { useSession } from "next-auth/react";
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { useRouter } from "next/navigation";
 import axios from "axios";
 
@@ -7,17 +7,61 @@ const VerificationModalCode = ({ phoneNumber, closeModal }) => {
   const { data: session } = useSession();
   const [message, setMessage] = useState({ type: "", content: "" });
   const [phoneNumberUpdate, setPhoneNumberUpdate] = useState("");
+  const [verificationCode, setVerificationCode] = useState([
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+  ]);
 
+  const inputRefs = useRef([]);
   const router = useRouter();
 
   const bgError = "bg-red-400";
   const bgSuccess = "bg-green-400";
 
+  const handleInputChange = (index, value) => {
+    const updatedVerificationCode = [...verificationCode];
+    updatedVerificationCode[index] = value;
+
+    const inputElement = inputRefs.current[index];
+    if (inputElement) {
+      inputElement.value = value;
+    }
+
+    setVerificationCode(updatedVerificationCode);
+
+    if (value && index < inputRefs.current.length - 1) {
+      const nextIndex = index + 1;
+      const nextInputElement = inputRefs.current[nextIndex];
+      if (nextInputElement) {
+        nextInputElement.focus();
+        nextInputElement.select(); // Seleccionar todo el texto para que se pueda escribir sin borrar el valor existente
+      }
+    }
+  };
+
+  const handlePaste = (e, index) => {
+    e.preventDefault();
+    const pastedData = e.clipboardData.getData("text");
+    // Dividir el texto pegado en caracteres individuales y asignarlos a los campos de entrada correspondientes
+    pastedData.split("").forEach((char, i) => {
+      if (index + i < inputRefs.current.length) {
+        inputRefs.current[index + i].value = char;
+        // Mover el foco al siguiente campo
+        if (index + i < inputRefs.current.length - 1) {
+          inputRefs.current[index + i + 1].focus();
+        }
+      }
+    });
+  };
+
   const handleVerificationSubmit = async (event) => {
     event.preventDefault();
-    const formData = new FormData(event.currentTarget);
-    const verificationCode = formData.get("verificationCode");
-    if (!verificationCode) {
+    const verificationCodeValue = verificationCode.join("");
+    if (!verificationCodeValue) {
       setMessage({
         type: "error",
         content: "Por favor ingresa el código de verificación",
@@ -27,11 +71,10 @@ const VerificationModalCode = ({ phoneNumber, closeModal }) => {
     try {
       setPhoneNumberUpdate(phoneNumber);
       const response = await axios.post("/api/auth/verification-code", {
-        verificationCode,
+        verificationCode: verificationCodeValue,
         phoneNumberVerification: phoneNumber,
       });
 
-      // 9d93f8748d0d4a
       if (response.data.status === 200) {
         setMessage({
           type: "success",
@@ -105,11 +148,29 @@ const VerificationModalCode = ({ phoneNumber, closeModal }) => {
                   <h1 className="text-3xl font-bold py-2">Verification code</h1>
 
                   <label className="text-slate-400">Code:</label>
-                  <input
+                  <div className="flex justify-between">
+                    {[0, 1, 2, 3, 4, 5].map((index) => (
+                      <div key={index} className="w-10 h-12">
+                        <input
+                          ref={(ref) => (inputRefs.current[index] = ref)}
+                          className="w-full h-full flex flex-col items-center justify-center text-center px-3 outline-none rounded-xl border border-gray-200 text-lg bg-white focus:bg-gray-50 focus:ring-1 ring-blue-700"
+                          type="text"
+                          maxLength={1}
+                          value={verificationCode[index]}
+                          onChange={(e) =>
+                            handleInputChange(index, e.target.value)
+                          }
+                          onPaste={(e) => handlePaste(e, index)}
+                        />
+                      </div>
+                    ))}
+                  </div>
+
+                  {/* <input
                     type="number"
                     name="verificationCode"
                     className="bg-slate-100 px-4 py-2 block mb-2 w-full"
-                  />
+                  /> */}
 
                   <div className="flex  items-center gap-4 md:w-80 w-full text-sm md:py-6 py-10">
                     <button className="flex-1 rounded-lg border border-indigo-500 bg-indigo-500 py-2.5 md:py-1.5 text-center text-sm font-semibold text-white shadow-sm transition-all hover:border-indigo-700 hover:bg-indigo-700 focus:ring focus:ring-indigo-200 disabled:cursor-not-allowed disabled:border-indigo-500 disabled:bg-indigo-500 disabled:opacity-80">

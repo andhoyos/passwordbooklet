@@ -11,7 +11,7 @@ const FormPhoneNumber = () => {
   const { data: session } = useSession();
   const [message, setMessage] = useState({ type: "", content: "" });
   const [phoneNumber, setPhoneNumber] = useState("");
-  const [showVerificationModal, setShowVerificationModal] = useState(false); // Estado para controlar la visibilidad del modal
+  const [showVerificationModal, setShowVerificationModal] = useState(false);
   const router = useRouter();
 
   const bgError = "bg-red-400";
@@ -53,7 +53,10 @@ const FormPhoneNumber = () => {
           type: "success",
           content: "Se envió un código de verificación a tu número de teléfono",
         });
-        setShowVerificationModal(true); // Mostrar el modal para ingresar el código de verificación
+        setTimeout(() => {
+          setMessage({ type: "", content: "" });
+          setShowVerificationModal(true); // Mostrar el modal para ingresar el código de verificación
+        }, "2000");
       }
     } catch (error) {
       console.error("Error during sending verification code:", error);
