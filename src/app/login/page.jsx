@@ -1,10 +1,15 @@
 "use client";
-import { useState } from "react";
-import { signIn } from "next-auth/react";
+import { useState, useEffect } from "react";
+import { signIn, useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
+import VerificationModalCode from "@/components/VerificationModal";
+import { handleTwoFactorAuth } from "@/helpers/twoFactorRequired";
 
 function LoginPage() {
   const [message, setMessage] = useState({ type: "", content: "" });
+  const [showVerificationModal, setShowVerificationModal] = useState(false);
+  const [phoneNumber, setPhoneNumber] = useState("");
+  const { data: session } = useSession();
   const router = useRouter();
 
   const bgError = "bg-red-400";
@@ -12,9 +17,7 @@ function LoginPage() {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-
     const formData = new FormData(event.currentTarget);
-
     const res = await signIn("credentials", {
       username: formData.get("username"),
       password: formData.get("password"),
@@ -22,9 +25,27 @@ function LoginPage() {
     });
 
     if (res.error) setMessage({ type: "error", content: res.error });
-
-    if (res?.ok) return router.push("/dashboard/keys");
   };
+  useEffect(() => {
+    if (session) {
+      if (session.user.twoFactorAuthEnabled) {
+        handleTwoFactorAuth(session.user.phoneNumber)
+          .then(() => {
+            setShowVerificationModal(true);
+            setPhoneNumber(session.user.phoneNumber);
+          })
+          .catch((error) => {
+            console.error("Error handling two factor authentication:", error);
+            setMessage({
+              type: "error",
+              content: "Error handling two factor authentication",
+            });
+          });
+      } else {
+        router.push("/dashboard/keys");
+      }
+    }
+  }, [session, router]);
 
   return (
     <div className="flex justify-center items-center md:mt-20 mt-24">
@@ -41,7 +62,7 @@ function LoginPage() {
             {message.content}
           </div>
         )}
-        <h1 className="md:text-3xl text-2xl font-bold mb-7">Sign in</h1>
+        <h1 className="md:text-3xl text-2xl font-bold mb-7">Signin</h1>
 
         <label className="text-slate-400">Username:</label>
         <input
@@ -75,6 +96,13 @@ function LoginPage() {
           </a>
         </p>
       </form>
+      {showVerificationModal && (
+        <VerificationModalCode
+          phoneNumber={phoneNumber}
+          closeModal={() => setShowVerificationModal(false)}
+          context="login"
+        />
+      )}
     </div>
   );
 }

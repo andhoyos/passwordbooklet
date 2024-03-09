@@ -3,7 +3,7 @@ import { useState, useRef } from "react";
 import { useRouter } from "next/navigation";
 import axios from "axios";
 
-const VerificationModalCode = ({ phoneNumber, closeModal }) => {
+const VerificationModalCode = ({ phoneNumber, closeModal, context }) => {
   const { data: session } = useSession();
   const [message, setMessage] = useState({ type: "", content: "" });
   const [phoneNumberUpdate, setPhoneNumberUpdate] = useState("");
@@ -80,17 +80,31 @@ const VerificationModalCode = ({ phoneNumber, closeModal }) => {
           type: "success",
           content: response.data.message,
         });
-        // Realiza la acción de guardar el número de teléfono en la base de datos
-        const responseUpdate = await axios.patch("/api/auth/profile", {
-          phoneNumber: phoneNumberUpdate,
-          user: session,
-        });
 
-        if (responseUpdate.data) {
+        if (context !== "login") {
+          // Realiza la acción de guardar el número de teléfono en la base de datos
+          const responseUpdate = await axios.patch("/api/auth/profile", {
+            phoneNumber: phoneNumberUpdate,
+            user: session,
+          });
+
+          if (responseUpdate.data) {
+            setMessage({
+              type: "success",
+              content:
+                "la proxima vez que inicies session te pediremos el codigo de verificacion",
+            });
+            setTimeout(() => {
+              setMessage({ type: "", content: "" });
+              closeModal();
+              router.push("/dashboard/profile");
+            }, "2000");
+          }
+        } else {
           setMessage({
             type: "success",
             content:
-              "la proxima vez que inicies session te pediremos el codigo de verificacion",
+              "Se verifico el codigo correctamente",
           });
           setTimeout(() => {
             setMessage({ type: "", content: "" });

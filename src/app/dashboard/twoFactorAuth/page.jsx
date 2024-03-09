@@ -103,6 +103,7 @@ const FormPhoneNumber = () => {
         <VerificationModalCode
           phoneNumber={phoneNumber}
           closeModal={closeModal}
+          context="twoFactorAuth"
         />
       )}
     </div>

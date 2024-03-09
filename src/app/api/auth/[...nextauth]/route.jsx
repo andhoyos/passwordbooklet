@@ -47,6 +47,8 @@ const handler = NextAuth({
           username: user.username,
           email: user.email,
           _id: user.id,
+          twoFactorAuthEnabled: user.twoFactorAuthEnabled,
+          phoneNumber: user.phoneNumber,
         };
       return token;
     },
