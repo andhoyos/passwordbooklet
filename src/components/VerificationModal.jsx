@@ -75,7 +75,7 @@ const VerificationModalCode = ({ phoneNumber, closeModal, context }) => {
         phoneNumberVerification: phoneNumber,
       });
 
-      if (response.data.status === 200) {
+      if (response.data.status === "approved") {
         setMessage({
           type: "success",
           content: response.data.message,
@@ -84,7 +84,7 @@ const VerificationModalCode = ({ phoneNumber, closeModal, context }) => {
         if (context !== "login") {
           // Realiza la acción de guardar el número de teléfono en la base de datos
           const responseUpdate = await axios.patch("/api/auth/profile", {
-            phoneNumber: phoneNumberUpdate,
+            phoneNumber: phoneNumber,
             user: session,
           });
 
@@ -103,8 +103,7 @@ const VerificationModalCode = ({ phoneNumber, closeModal, context }) => {
         } else {
           setMessage({
             type: "success",
-            content:
-              "Se verifico el codigo correctamente",
+            content: "Se verifico el codigo correctamente",
           });
           setTimeout(() => {
             setMessage({ type: "", content: "" });

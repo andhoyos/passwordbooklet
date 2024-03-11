@@ -22,7 +22,7 @@ export async function POST(request) {
     if (verification_check.status === "approved") {
       return NextResponse.json({
         message: "Verification code approved",
-        status: 200,
+        status: verification_check.status,
       });
     } else {
       return NextResponse.json({

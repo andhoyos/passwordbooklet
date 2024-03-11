@@ -9,6 +9,7 @@ function LoginPage() {
   const [message, setMessage] = useState({ type: "", content: "" });
   const [showVerificationModal, setShowVerificationModal] = useState(false);
   const [phoneNumber, setPhoneNumber] = useState("");
+  const [submitting, setSubmitting] = useState(false); // Flag to track form submission
   const { data: session } = useSession();
   const router = useRouter();
 
@@ -17,6 +18,7 @@ function LoginPage() {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+    setSubmitting(true); // Set submitting to true when form is submitted
     const formData = new FormData(event.currentTarget);
     const res = await signIn("credentials", {
       username: formData.get("username"),
@@ -24,10 +26,14 @@ function LoginPage() {
       redirect: false,
     });
 
-    if (res.error) setMessage({ type: "error", content: res.error });
+    if (res.error) {
+      setMessage({ type: "error", content: res.error });
+    }
   };
+
   useEffect(() => {
-    if (session) {
+    if (submitting && session) {
+      // Only proceed if submitting and session exist
       if (session.user.twoFactorAuthEnabled) {
         handleTwoFactorAuth(session.user.phoneNumber)
           .then(() => {
@@ -40,12 +46,15 @@ function LoginPage() {
               type: "error",
               content: "Error handling two factor authentication",
             });
+          })
+          .finally(() => {
+            setSubmitting(false); // Set submitting back to false after handling two factor auth
           });
       } else {
         router.push("/dashboard/keys");
       }
     }
-  }, [session, router]);
+  }, [submitting, session, router]);
 
   return (
     <div className="flex justify-center items-center md:mt-20 mt-24">
