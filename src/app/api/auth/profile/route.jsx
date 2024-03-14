@@ -59,7 +59,7 @@ export async function PUT(request) {
 
 export async function PATCH(request) {
   const data = await request.json();
-  const { phoneNumber, user } = data;
+  const { totpSecret, user } = data;
   const session = user;
 
   if (!session?.user) {
@@ -75,7 +75,7 @@ export async function PATCH(request) {
       },
       {
         $set: {
-          phoneNumber: phoneNumber,
+          totpSecret: totpSecret,
           twoFactorAuthEnabled: true,
         },
       },
