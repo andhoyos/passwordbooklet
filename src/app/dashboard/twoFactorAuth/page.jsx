@@ -4,16 +4,21 @@ import { useState } from "react";
 import { authenticator } from "otplib";
 import QRCode from "qrcode.react";
 import Link from "next/link";
+import Image from "next/image";
+import playLogo from "@/images/playLogo.svg";
+import Info2FA from "@/components/ModalInfo2FA";
 
 function CodeAuth() {
   const [totpSecret, setTotpSecret] = useState("");
+  const [modalInfo, setmodalInfo] = useState(true);
   const [message, setMessage] = useState("");
 
   const generateTotpSecret = () => {
     const secret = authenticator.generateSecret();
     setTotpSecret(secret);
-    setMessage(`Tu clave secreta es: ${secret}`);
+    setMessage(`Ó ingresa esta clave manualmente: ${secret}`);
   };
+
   return (
     <div className="flex  justify-center items-center md:mt-14 mt-20">
       <div className="bg-white text-slate-500 px-8 py-10 max-w-md  w-96 mx-auto shadow-lg  rounded-lg">
@@ -31,22 +36,20 @@ function CodeAuth() {
             <div>{message}</div>
           </div>
         )}
-        <p>
-          Vas a necesitar una aplicacion de autenticacion, abajo encontraras dos
-          opciones disponibles para Android.
-        </p>
-        <div className="flex justify-around items-center pt-4">
+        {modalInfo && <Info2FA closeModal={() => setmodalInfo(false)} />}
+        <div className="flex justify-around md:flex-row md:gap-0 gap-2 flex-col items-center pt-4">
           <Link
-            className="border-2 rounded-md px-4 py-2"
+            className="inline-flex items-center gap-1 border-2 rounded-md px-4 py-2"
             href="https://play.google.com/store/apps/details?id=com.authy.authy&hl=es_419&gl=US"
           >
-            Authy
+            Authy <Image src={playLogo} width={20} height={20} alt="playLogo" />
           </Link>
           <Link
-            className="border-2 rounded-md px-4 py-2"
+            className="inline-flex items-center gap-1 border-2 rounded-md px-4 py-2"
             href="https://play.google.com/store/apps/details?id=com.google.android.apps.authenticator2&hl=es&gl=US"
           >
-            Google Authenticator
+            Google Authenticator{" "}
+            <Image src={playLogo} width={20} height={20} alt="playLogo" />
           </Link>
         </div>
         <button className="w-full mt-5" onClick={generateTotpSecret}>
