@@ -25,7 +25,7 @@ function KeysPage() {
         const data = response.data;
         setKeysList(data);
       } catch (error) {
-        console.error("Error fetching keys:", error);
+        console.error(error.response.data.message, error);
       } finally {
         setLoading(false);
       }
@@ -35,6 +35,17 @@ function KeysPage() {
       fetchKeys();
     }
   }, [status, session]);
+
+  let isVerificationValidated = sessionStorage.getItem(
+    "isVerificationValidated"
+  );
+  if (isVerificationValidated === null) {
+    isVerificationValidated = false;
+  } else {
+    isVerificationValidated = isVerificationValidated === "true";
+  }
+
+  console.log(isVerificationValidated);
 
   const handleCompanyClick = (company) => {
     setSelectedCompany(company);
@@ -121,6 +132,7 @@ function KeysPage() {
               .accounts
           }
           closeModal={closeModal}
+          isValidated={isVerificationValidated}
         />
       )}
 

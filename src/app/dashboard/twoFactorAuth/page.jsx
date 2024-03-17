@@ -2,21 +2,44 @@
 
 import { useState } from "react";
 import { authenticator } from "otplib";
+import { useSession } from "next-auth/react";
 import QRCode from "qrcode.react";
 import Link from "next/link";
 import Image from "next/image";
 import playLogo from "@/images/playLogo.svg";
 import Info2FA from "@/components/ModalInfo2FA";
+import axios from "axios";
 
 function CodeAuth() {
   const [totpSecret, setTotpSecret] = useState("");
-  const [modalInfo, setmodalInfo] = useState(true);
+  const [modalInfo, setmodalInfo] = useState(false);
   const [message, setMessage] = useState("");
+  const { data: session } = useSession();
 
-  const generateTotpSecret = () => {
-    const secret = authenticator.generateSecret();
+  const generateTotpSecret = async () => {
+    const secret = await authenticator.generateSecret();
     setTotpSecret(secret);
     setMessage(`Ó ingresa esta clave manualmente: ${secret}`);
+    // try {
+    //   const responseUpdate = await axios.patch("/api/auth/profile", {
+    //     totpSecret: secret,
+    //     user: session,
+    //   });
+
+    //   session.user = responseUpdate.data;
+
+    //   if (responseUpdate.data) {
+    //     setTotpSecret(secret);
+    //     setMessage(`Ó ingresa esta clave manualmente: ${secret}`);
+    //   }
+    // } catch (error) {
+    //   console.error("Error during generation:", error);
+    //   if (error.response?.data.message) {
+    //     setMessage({ type: "error", content: error.response.data.message });
+    //   } else {
+    //     setMessage({ type: "error", content: "Ocurrió un error" });
+    //   }
+    // }
   };
 
   return (

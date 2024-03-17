@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import { authenticator } from "otplib";
 
-function VerificationTOTP() {
+function VerificationTOTP({ onSuccess }) {
   const [totpSecret, setTotpSecret] = useState("");
   const [message, setMessage] = useState({ type: "", content: "" });
   const [verificationCode, setVerificationCode] = useState([
@@ -20,7 +20,7 @@ function VerificationTOTP() {
 
   // Simulando la obtención de la clave secreta desde la base de datos
   useEffect(() => {
-    const secretFromDB = "MEPHGR3UHMATKAJF";
+    const secretFromDB = "EFJCCPCNNYHF2OA6";
     setTotpSecret(secretFromDB);
   }, []);
 
@@ -62,12 +62,24 @@ function VerificationTOTP() {
 
   // Verificar el código de autenticación ingresado por el usuario
   const verifyAuthCode = () => {
-    const isValid = authenticator.check(verificationCode, totpSecret);
+    const verificationCodeValue = verificationCode.join("");
+    if (!verificationCodeValue) {
+      setMessage({
+        type: "error",
+        content: "Por favor ingresa el código de verificación",
+      });
+      return;
+    }
+    console.log(verificationCodeValue);
+    const isValid = authenticator.check(verificationCodeValue, totpSecret);
     if (isValid) {
       setMessage({
         type: "success",
         content: "¡Código de autenticación válido!",
       });
+      setTimeout(() => {
+        onSuccess();
+      }, "1000");
     } else {
       setMessage({
         type: "error",
@@ -78,7 +90,7 @@ function VerificationTOTP() {
 
   return (
     <div className="flex  justify-center items-center md:mt-14 mt-20">
-      <div className="bg-white text-slate-500 px-8 py-10 max-w-md  w-96 mx-auto shadow-lg  rounded-lg">
+      <div className="bg-white text-slate-500 px-8 max-w-md  w-96 mx-auto  rounded-lg">
         {message.content && (
           <div
             className={`${
