@@ -36,16 +36,16 @@ function KeysPage() {
     }
   }, [status, session]);
 
-  let isVerificationValidated = sessionStorage.getItem(
-    "isVerificationValidated"
-  );
-  if (isVerificationValidated === null) {
-    isVerificationValidated = false;
-  } else {
-    isVerificationValidated = isVerificationValidated === "true";
-  }
+  let isVerificationValidated = false;
 
-  console.log(isVerificationValidated);
+  if (typeof window !== "undefined") {
+    isVerificationValidated = sessionStorage.getItem("isVerificationValidated");
+    if (isVerificationValidated === null) {
+      isVerificationValidated = false;
+    } else {
+      isVerificationValidated = isVerificationValidated === "true";
+    }
+  }
 
   const handleCompanyClick = (company) => {
     setSelectedCompany(company);
