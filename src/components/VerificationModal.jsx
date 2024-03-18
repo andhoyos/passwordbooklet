@@ -110,6 +110,7 @@ function VerificationTOTP({ onSuccess }) {
                 ref={(ref) => (inputRefs.current[index] = ref)}
                 className="w-full h-full flex flex-col items-center justify-center text-center px-3 outline-none rounded-xl border border-gray-200 text-lg bg-white focus:bg-gray-50 focus:ring-1 ring-blue-700"
                 type="text"
+                inputMode="numeric"
                 maxLength={1}
                 value={verificationCode[index]}
                 onChange={(e) => handleInputChange(index, e.target.value)}
