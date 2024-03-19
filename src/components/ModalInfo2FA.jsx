@@ -1,20 +1,30 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
+import { useSession } from "next-auth/react";
 import Link from "next/link";
 import Image from "next/image";
 import playLogo from "@/images/playLogo.svg";
-import { useSession } from "next-auth/react";
 import axios from "axios";
 
 const Info2FA = ({ closeModal }) => {
   const [user2FA, setUser2FA] = useState(false);
   const [message, setMessage] = useState("");
   const { data: session } = useSession();
+  const router = useRouter();
 
   useEffect(() => {
     setUser2FA(session.user.twoFactorAuthEnabled);
   }, [session]);
+
+  if (user2FA) {
+    closeModal = () => {
+      router.push("/dashboard/keys");
+    };
+  } else {
+    closeModal = closeModal;
+  }
 
   const bgError = "bg-red-400";
   const bgSuccess = "bg-green-400";
@@ -36,7 +46,7 @@ const Info2FA = ({ closeModal }) => {
         });
         setTimeout(() => {
           setMessage({ type: "", content: "" });
-          closeModal();
+          router.push("/dashboard/keys");
         }, 2000);
       }
     } catch (error) {

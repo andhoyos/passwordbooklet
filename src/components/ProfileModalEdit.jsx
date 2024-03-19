@@ -132,7 +132,7 @@ const ProfileModalEdit = ({ username, email, closeModal }) => {
                   />
                   <p
                     onClick={handleShowChangePassword}
-                    className="cursor-pointer rounded-lg border border-green-500 bg-green-500 py-2.5 md:py-1.5 text-center text-sm font-semibold text-white shadow-sm transition-all hover:border-green-700 hover:bg-green-700 focus:ring focus:ring-green-200 disabled:cursor-not-allowed disabled:border-green-500 disabled:bg-green-500 disabled:opacity-80"
+                    className="cursor-pointer text-right text-slate-500 font-semibold"
                   >
                     Cambiar contraseña
                   </p>
@@ -143,6 +143,7 @@ const ProfileModalEdit = ({ username, email, closeModal }) => {
                         type="password"
                         name="newPassword"
                         value={newPassword}
+                        placeholder="*******"
                         onChange={(e) => setNewPassword(e.target.value)}
                         className="bg-slate-100 px-4 py-2 block w-full"
                       />

@@ -18,29 +18,27 @@ function CodeAuth() {
 
   const generateTotpSecret = async () => {
     const secret = await authenticator.generateSecret();
-    setTotpSecret(secret);
-    setMessage(`Ó ingresa esta clave manualmente: ${secret}`);
-    // try {
-    //   const responseUpdate = await axios.patch("/api/auth/profile", {
-    //     totpSecret: secret,
-    //     twoFactorAuthEnabled: true,
-    //     user: session,
-    //   });
+    try {
+      const responseUpdate = await axios.patch("/api/auth/profile", {
+        totpSecret: secret,
+        twoFactorAuthEnabled: true,
+        user: session,
+      });
 
-    //   session.user = responseUpdate.data;
+      session.user = responseUpdate.data;
 
-    //   if (responseUpdate.data) {
-    //     setTotpSecret(secret);
-    //     setMessage(`Ó ingresa esta clave manualmente: ${secret}`);
-    //   }
-    // } catch (error) {
-    //   console.error("Error during generation:", error);
-    //   if (error.response?.data.message) {
-    //     setMessage({ type: "error", content: error.response.data.message });
-    //   } else {
-    //     setMessage({ type: "error", content: "Ocurrió un error" });
-    //   }
-    // }
+      if (responseUpdate.data) {
+        setTotpSecret(secret);
+        setMessage(`Ó ingresa esta clave manualmente: ${secret}`);
+      }
+    } catch (error) {
+      console.error("Error during generation:", error);
+      if (error.response?.data.message) {
+        setMessage({ type: "error", content: error.response.data.message });
+      } else {
+        setMessage({ type: "error", content: "Ocurrió un error" });
+      }
+    }
   };
 
   return (
@@ -77,7 +75,11 @@ function CodeAuth() {
             Google Authenticator{" "}
           </Link>
         </div>
-        <button className="w-full mt-5" onClick={generateTotpSecret}>
+        <button
+          className="w-full mt-5"
+          onClick={generateTotpSecret}
+          disabled={totpSecret}
+        >
           Generar clave secreta
         </button>
       </div>
