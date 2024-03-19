@@ -42,7 +42,7 @@ function CodeAuth() {
   };
 
   return (
-    <div className="flex  justify-center items-center md:mt-14 mt-20">
+    <div className="flex  justify-center items-center md:mt-14 mt-20 px-4">
       <div className="bg-white text-slate-500 px-8 py-10 max-w-md  w-96 mx-auto shadow-lg  rounded-lg">
         {totpSecret && (
           <div>

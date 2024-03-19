@@ -21,7 +21,7 @@ export default function Navbar() {
   };
 
   return (
-    <nav className="bg-slate-50 py-4 px-8">
+    <nav className="bg-slate-50 py-4 md:px-8 px-4">
       <div className="container mx-auto flex justify-between">
         <Link
           href="/"

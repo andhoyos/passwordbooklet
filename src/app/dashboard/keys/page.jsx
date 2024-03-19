@@ -105,7 +105,7 @@ function KeysPage() {
     <div className="flex flex-col gap-y-10 items-center justify-center md:pb-auto pb-5">
       <h1 className="font-bold text-3xl">Keys</h1>
 
-      <div className="grid grid-cols-3 w-full md:w-auto gap-2 max-[500px]:grid-cols-1 px-3 ">
+      <div className="grid grid-cols-3 w-full md:w-auto gap-2 max-[500px]:grid-cols-1 px-3 md:mx-14">
         {keysList.map((key) => (
           <div
             key={key._id}
