@@ -108,7 +108,7 @@ function KeysPage() {
 
   return (
     <div className="flex flex-col gap-y-10 items-center justify-center md:pb-auto pb-5">
-      <div>
+      <div className="w-full md:w-auto min-w-96 px-8 md:px-0">
         <h1 className="font-bold text-3xl mb-3">Keys</h1>
         <input
           type="text"
