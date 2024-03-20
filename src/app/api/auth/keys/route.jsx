@@ -22,7 +22,7 @@ export async function GET(request) {
       return NextResponse.json({ message: "User not found" }, { status: 404 });
     }
 
-    const keys = await Key.find({ user: user._id });
+    const keys = await Key.find({ user: user._id }).sort({ company: 1 });
 
     const decryptedKeys = await Promise.all(
       keys.map(async (key) => {

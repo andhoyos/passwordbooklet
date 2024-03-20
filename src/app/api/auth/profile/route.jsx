@@ -161,7 +161,7 @@ export async function DELETE(request) {
   try {
     await connectDB();
 
-    await Key.deleteMany({ userId: userId });
+    await Key.deleteMany({ user: userId });
 
     const deletedUser = await User.findOneAndDelete({
       _id: userId,

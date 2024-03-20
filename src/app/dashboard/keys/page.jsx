@@ -11,6 +11,7 @@ function KeysPage() {
   const [keysList, setKeysList] = useState([]);
   const [loading, setLoading] = useState(true);
   const [selectedCompany, setSelectedCompany] = useState(null);
+  const [searchTerm, setSearchTerm] = useState("");
 
   useEffect(() => {
     const fetchKeys = async () => {
@@ -46,6 +47,10 @@ function KeysPage() {
       isVerificationValidated = isVerificationValidated === "true";
     }
   }
+
+  const filteredKeys = keysList.filter((key) =>
+    key.company.toLowerCase().includes(searchTerm.toLowerCase())
+  );
 
   const handleCompanyClick = (company) => {
     setSelectedCompany(company);
@@ -103,24 +108,49 @@ function KeysPage() {
 
   return (
     <div className="flex flex-col gap-y-10 items-center justify-center md:pb-auto pb-5">
-      <h1 className="font-bold text-3xl">Keys</h1>
+      <div>
+        <h1 className="font-bold text-3xl mb-3">Keys</h1>
+        <input
+          type="text"
+          placeholder="Buscar keys..."
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+          className="rounded-lg border border-gray-300 px-3 py-1 w-full focus:outline-none focus:ring focus:border-blue-500"
+        />
+      </div>
 
-      <div className="grid grid-cols-3 w-full md:w-auto gap-2 max-[500px]:grid-cols-1 px-3 md:mx-14">
-        {keysList.map((key) => (
-          <div
-            key={key._id}
-            onClick={() => handleCompanyClick(key)}
-            className={`group w-full rounded-lg text-white ${
-              colors[colorIndex++ % colors.length]
-            } p-5 transition relative duration-300 cursor-pointer hover:translate-y-[3px] hover:shadow-[0_-8px_0px_0px_red]`}
-          >
-            <p className="cursor-pointer text-xl">{key.company}</p>
-            <p>
-              {key.accounts.length}{" "}
-              {key.accounts.length === 1 ? "cuenta" : "cuentas"}
-            </p>
-          </div>
-        ))}
+      <div className="grid grid-cols-3 w-full md:w-auto gap-2 max-[500px]:grid-cols-1 px-3 md:mx-14 ">
+        {searchTerm
+          ? filteredKeys.map((key) => (
+              <div
+                key={key._id}
+                onClick={() => handleCompanyClick(key)}
+                className={`group w-full rounded-lg text-white ${
+                  colors[colorIndex++ % colors.length]
+                } p-5 transition relative duration-300 cursor-pointer hover:translate-y-[3px] hover:shadow-[0_-8px_0px_0px_red]`}
+              >
+                <p className="cursor-pointer text-xl">{key.company}</p>
+                <p>
+                  {key.accounts.length}{" "}
+                  {key.accounts.length === 1 ? "cuenta" : "cuentas"}
+                </p>
+              </div>
+            ))
+          : keysList.map((key) => (
+              <div
+                key={key._id}
+                onClick={() => handleCompanyClick(key)}
+                className={`group w-full rounded-lg text-white ${
+                  colors[colorIndex++ % colors.length]
+                } p-5 transition relative duration-300 cursor-pointer hover:translate-y-[3px] hover:shadow-[0_-8px_0px_0px_red]`}
+              >
+                <p className="cursor-pointer text-xl">{key.company}</p>
+                <p>
+                  {key.accounts.length}{" "}
+                  {key.accounts.length === 1 ? "cuenta" : "cuentas"}
+                </p>
+              </div>
+            ))}
       </div>
 
       {selectedCompany && (
