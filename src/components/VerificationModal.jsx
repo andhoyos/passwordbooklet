@@ -1,7 +1,10 @@
 import { useState, useEffect, useRef } from "react";
+import { useSession } from "next-auth/react";
 import { authenticator } from "otplib";
+import axios from "axios";
 
 function VerificationTOTP({ onSuccess }) {
+  const { data: session } = useSession();
   const [totpSecret, setTotpSecret] = useState("");
   const [message, setMessage] = useState({ type: "", content: "" });
   const [verificationCode, setVerificationCode] = useState([
@@ -18,11 +21,62 @@ function VerificationTOTP({ onSuccess }) {
   const bgError = "bg-red-400";
   const bgSuccess = "bg-green-400";
 
-  // Simulando la obtención de la clave secreta desde la base de datos
   useEffect(() => {
-    const secretFromDB = "EFJCCPCNNYHF2OA6";
-    setTotpSecret(secretFromDB);
+    const fetchTOTPSecret = async () => {
+      try {
+        const response = await axios.get("/api/auth/profile", {
+          withCredentials: true,
+          headers: {
+            Authorization: `Bearer ${session.accessToken}`,
+          },
+        });
+        const secretFromDB = response.data;
+
+        setTotpSecret(secretFromDB);
+      } catch (error) {
+        console.error("Error fetching TOTP secret:", error);
+      }
+    };
+
+    if (session) {
+      fetchTOTPSecret();
+    }
+  }, [session]);
+
+  useEffect(() => {
+    inputRefs.current[0]?.focus();
   }, []);
+
+  const handleKeyDown = (index, event) => {
+    if (event.key === "Backspace") {
+      handleInputChange(index, "");
+      if (index > 0) {
+        const prevIndex = index - 1;
+        const prevInputElement = inputRefs.current[prevIndex];
+        if (prevInputElement) {
+          prevInputElement.focus();
+          prevInputElement.select();
+        }
+      }
+    } else if (event.key === "ArrowLeft" && index > 0) {
+      const prevIndex = index - 1;
+      const prevInputElement = inputRefs.current[prevIndex];
+      if (prevInputElement) {
+        prevInputElement.focus();
+        prevInputElement.select();
+      }
+    } else if (
+      event.key === "ArrowRight" &&
+      index < verificationCode.length - 1
+    ) {
+      const nextIndex = index + 1;
+      const nextInputElement = inputRefs.current[nextIndex];
+      if (nextInputElement) {
+        nextInputElement.focus();
+        nextInputElement.select();
+      }
+    }
+  };
 
   const handleInputChange = (index, value) => {
     const updatedVerificationCode = [...verificationCode];
@@ -115,6 +169,7 @@ function VerificationTOTP({ onSuccess }) {
                 value={verificationCode[index]}
                 onChange={(e) => handleInputChange(index, e.target.value)}
                 onPaste={(e) => handlePaste(e, index)}
+                onKeyDown={(e) => handleKeyDown(index, e)}
               />
             </div>
           ))}

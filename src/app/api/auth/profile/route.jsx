@@ -1,7 +1,39 @@
 import { NextResponse } from "next/server";
 import { connectDB } from "@/libs/mongodb";
 import User from "@/models/users";
+import Key from "@/models/Key";
+import { getServerSession } from "next-auth/next";
+import { encryptSymmetric } from "@/helpers/encryption";
+import { decryptSymmetric } from "@/helpers/decryption";
 import bcrypt from "bcryptjs";
+
+const { WEB_CRYPTO } = process.env;
+export async function GET(request) {
+  const session = await getServerSession({ request });
+
+  if (!session?.user?.email) {
+    return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
+  }
+
+  try {
+    await connectDB();
+    const userFound = await User.findOne({ email: session.user.email });
+
+    const decryptedTotpSecret = await decryptSymmetric(
+      userFound.totpSecret,
+      userFound.iv,
+      WEB_CRYPTO
+    );
+
+    return NextResponse.json(decryptedTotpSecret);
+  } catch (error) {
+    console.error("Error fetching User:", error);
+    return NextResponse.json(
+      { message: "Internal Server Error" },
+      { status: 500 }
+    );
+  }
+}
 
 export async function PUT(request) {
   const data = await request.json();
@@ -62,6 +94,8 @@ export async function PATCH(request) {
   const { totpSecret, twoFactorAuthEnabled, user } = data;
   const session = user;
 
+  let totpSecretUpdate, ivUpdate;
+
   if (!session?.user) {
     return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
   }
@@ -69,13 +103,26 @@ export async function PATCH(request) {
   try {
     await connectDB();
 
+    if (twoFactorAuthEnabled) {
+      const encryptedTotpSecret = await encryptSymmetric(
+        totpSecret,
+        WEB_CRYPTO
+      );
+      totpSecretUpdate = encryptedTotpSecret.ciphertext;
+      ivUpdate = encryptedTotpSecret.iv;
+    } else {
+      totpSecretUpdate = totpSecret;
+      ivUpdate = "";
+    }
+
     const userUpdate = await User.findOneAndUpdate(
       {
         _id: session.user._id,
       },
       {
         $set: {
-          totpSecret: totpSecret,
+          totpSecret: totpSecretUpdate,
+          iv: ivUpdate,
           twoFactorAuthEnabled: twoFactorAuthEnabled,
         },
       },
@@ -113,6 +160,9 @@ export async function DELETE(request) {
 
   try {
     await connectDB();
+
+    await Key.deleteMany({ userId: userId });
+
     const deletedUser = await User.findOneAndDelete({
       _id: userId,
     });

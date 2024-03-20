@@ -7,12 +7,14 @@ import QRCode from "qrcode.react";
 import Link from "next/link";
 import Image from "next/image";
 import playLogo from "@/images/playLogo.svg";
+import copy from "@/images/copy.svg";
 import Info2FA from "@/components/ModalInfo2FA";
 import axios from "axios";
 
 function CodeAuth() {
   const [totpSecret, setTotpSecret] = useState("");
   const [modalInfo, setmodalInfo] = useState(true);
+  const [genSecret, setGenSecret] = useState("");
   const [message, setMessage] = useState("");
   const { data: session } = useSession();
 
@@ -29,7 +31,7 @@ function CodeAuth() {
 
       if (responseUpdate.data) {
         setTotpSecret(secret);
-        setMessage(`Ó ingresa esta clave manualmente: ${secret}`);
+        setGenSecret(secret);
       }
     } catch (error) {
       console.error("Error during generation:", error);
@@ -41,8 +43,21 @@ function CodeAuth() {
     }
   };
 
+  const copyToClipboard = () => {
+    navigator.clipboard.writeText(genSecret);
+    setMessage({ content: "Texto copiado" });
+    setTimeout(() => {
+      setMessage({ content: "" });
+    }, "2000");
+  };
+
   return (
-    <div className="flex  justify-center items-center md:mt-14 mt-20 px-4">
+    <div className="flex justify-center items-center md:mt-14 mt-20 px-4">
+      {message.content && (
+        <div className="bg-slate-50 p-2 mb-2 rounded-md absolute">
+          {message.content}
+        </div>
+      )}
       <div className="bg-white text-slate-500 px-8 py-10 max-w-md  w-96 mx-auto shadow-lg  rounded-lg">
         {totpSecret && (
           <div>
@@ -55,7 +70,19 @@ function CodeAuth() {
               )}
               className="mx-auto my-5"
             />
-            <div>{message}</div>
+            <p>Ó ingresa esta clave manualmente:</p>
+            <div className="font-semibold flex gap-3">
+              {genSecret}{" "}
+              <Image
+                src={copy}
+                width={18}
+                height={18}
+                alt="copy"
+                title="Copiar"
+                className="cursor-pointer"
+                onClick={copyToClipboard}
+              />
+            </div>
           </div>
         )}
         {modalInfo && <Info2FA closeModal={() => setmodalInfo(false)} />}

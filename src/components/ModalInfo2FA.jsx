@@ -33,6 +33,7 @@ const Info2FA = ({ closeModal }) => {
     try {
       const responseUpdate = await axios.patch("/api/auth/profile", {
         totpSecret: "",
+        // iv: "",
         twoFactorAuthEnabled: false,
         user: session,
       });
