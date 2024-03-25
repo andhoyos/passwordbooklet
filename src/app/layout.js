@@ -2,6 +2,7 @@ import { Inter } from 'next/font/google'
 import './globals.css'
 import Providers from "./Providers";
 import Navbar from "../components/Navbar";
+import SessionTimer from "@/components/SessionTimer";
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -16,6 +17,7 @@ export default function RootLayout({ children }) {
       <body className="bg-slate-50 h-screen md:py-0 py-6 text-slate-400">
         <Providers>
           <Navbar />
+          <SessionTimer />
           <div className="container mx-auto">{children}</div>
         </Providers></body>
     </html>

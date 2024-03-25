@@ -162,7 +162,7 @@ function VerificationTOTP({ onSuccess }) {
             <div key={index} className="w-10 h-12">
               <input
                 ref={(ref) => (inputRefs.current[index] = ref)}
-                className="w-full h-full flex flex-col items-center justify-center text-center px-3 outline-none rounded-xl border border-gray-200 text-lg bg-white focus:bg-gray-50 focus:ring-1 ring-blue-700"
+                className="w-full h-full flex flex-col items-center justify-center text-center px-3 outline-none rounded-xl border border-gray-300 text-lg bg-white focus:bg-gray-50 focus:ring-1 ring-blue-700"
                 type="text"
                 inputMode="numeric"
                 maxLength={1}

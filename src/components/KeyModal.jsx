@@ -3,8 +3,8 @@ import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
 import { useState } from "react";
 import Image from "next/image";
-import lock from "./lock.svg";
-import unlock from "./unlock.svg";
+import lock from "@/images/lock.svg";
+import unlock from "@/images/unlock.svg";
 import VerificationTOTP from "@/components/VerificationModal";
 
 const KeyModal = ({

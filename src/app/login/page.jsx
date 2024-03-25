@@ -1,14 +1,31 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
+import SessionClosed from "@/components/InfoModalSession";
 
 function LoginPage() {
   const [message, setMessage] = useState({ type: "", content: "" });
+  const [logoutMessage, setLogoutMessage] = useState("");
+  const [showModalSession, setShowModalSession] = useState(false);
   const router = useRouter();
+
+  const closeModal = () => {
+    localStorage.removeItem("logoutMessage");
+    setShowModalSession(false);
+    setLogoutMessage("");
+  };
 
   const bgError = "bg-red-400";
   const bgSuccess = "bg-green-400";
+
+  useEffect(() => {
+    const sessionMessage = localStorage.getItem("logoutMessage");
+    if (sessionMessage) {
+      setLogoutMessage(sessionMessage);
+      setShowModalSession(true);
+    }
+  }, []);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -77,6 +94,9 @@ function LoginPage() {
           </a>
         </p>
       </form>
+      {showModalSession && (
+        <SessionClosed contentMessage={logoutMessage} closeModal={closeModal} />
+      )}
     </div>
   );
 }

@@ -4,8 +4,8 @@ import Link from "next/link";
 import Image from "next/image";
 import { useSession, signOut } from "next-auth/react";
 import { useState } from "react";
-import logo from "./logo.png";
-import user from "./user.svg";
+import logo from "@/images/logo.png";
+import user from "@/images/user.svg";
 
 export default function Navbar() {
   const { data: session, status } = useSession();
