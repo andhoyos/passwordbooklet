@@ -9,14 +9,23 @@ export async function POST(request) {
   try {
     await connectDB();
 
-    const { username, email, password } = data;
-    const userFound = await User.findOne({ email: email });
+    const { username, email, password, rsaPublicKey } = data;
 
-    if (userFound)
+    const usernameUserFound = await User.findOne({ username });
+    if (usernameUserFound) {
       return NextResponse.json(
-        { message: "email already exist" },
+        { message: "El nombre de usuario ya existe" },
         { status: 400 }
       );
+    }
+
+    const emailUserFound = await User.findOne({ email });
+    if (emailUserFound) {
+      return NextResponse.json(
+        { message: "Ya existe un usuario registrado con este Email" },
+        { status: 400 }
+      );
+    }
 
     const hashedPassword = await bcrypt.hash(password, 12);
 

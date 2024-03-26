@@ -8,6 +8,7 @@ import ProfileModalDelete from "@/components/ProfileModalDelete";
 function ProfilePage() {
   const { data: session, status } = useSession();
   const [keysList, setKeysList] = useState([]);
+  const [loading, setLoading] = useState(true);
   const [selectedUser, setSelectedUser] = useState(null);
   const [selectedUserDelete, setSelectedUserDelete] = useState(null);
 
@@ -30,6 +31,8 @@ function ProfilePage() {
         setKeysList(data);
       } catch (error) {
         console.error("Error fetching keys:", error);
+      } finally {
+        setLoading(false);
       }
     };
 
@@ -49,6 +52,17 @@ function ProfilePage() {
     setSelectedUser(null);
     setSelectedUserDelete(null);
   };
+
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center  h-80">
+        <div className="flex items-center justify-center gap-5 flex-col">
+          <div className="loader "></div>
+          <div>estamos procesando los datos ...</div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className=" flex flex-col gap-y-10 items-center justify-center">
@@ -79,7 +93,12 @@ function ProfilePage() {
                   <h3>Username: {session.user.username}</h3>
                   <h3>Email: {session.user.email}</h3>
                   <h3>Status: {status}</h3>
-                  <h3>Id: {session.user._id}</h3>
+                  <h3>
+                    TwoFactorEnabled:{" "}
+                    {session.user.twoFactorAuthEnabled
+                      ? "Activado"
+                      : "Desactivado"}
+                  </h3>
                 </div>
                 <div className="flex justify-between">
                   <button
@@ -224,17 +243,6 @@ function ProfilePage() {
           </div>
         </div>
       )}
-
-      <pre className="bg-zinc-800 md:p-4 p-1.5">
-        {JSON.stringify(
-          {
-            session,
-            status,
-          },
-          null,
-          2
-        )}
-      </pre>
     </div>
   );
 }
