@@ -21,7 +21,7 @@ export default function InactivityTimer({ timeoutSeconds = 1800 }) {
     const logout = () => {
       sessionStorage.removeItem("isVerificationValidated");
       const logoutMessage =
-        "Tu sesión expiró. Por razones de seguridad, depues de 30 minutos sin actividad se cierra automaticamente.";
+        "Por razones de seguridad, despues de un tiempo sin actividad se cierra automaticamente.";
       localStorage.setItem("logoutMessage", logoutMessage);
       signOut();
     };

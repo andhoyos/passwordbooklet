@@ -18,7 +18,8 @@ const SessionClosed = ({ closeModal, contentMessage }) => {
             <div className="sm:flex sm:items-start">
               <div className="mt-3  sm:mt-0 sm:ml-4 sm:text-left w-full">
                 <div className="bg-white text-slate-500 md:px-8 px-4 py-6 max-w-md md:w-96 w-full mx-auto  rounded-lg">
-                  <p className=" text-center text-xl">{contentMessage}</p>
+                  <p className=" text-2xl font-semibold">Tu sesión expiró.</p>
+                  <p className=" text-xl">{contentMessage}</p>
                 </div>
               </div>
             </div>

@@ -4,8 +4,8 @@ export default function Home() {
     <main className="flex  h-96 flex-col items-center md:justify-between justify-around p-10 md:p-24 mt-16 md:m-auto ">
       <div className="max-w-5xl w-full items-center justify-center  text-sm lg:flex ">
         <div className="flex h-48 w-full flex-col justify-center text-center lg:static lg:h-auto lg:w-auto lg:bg-none">
-          <h1 className=" mb-2 text-xl md:text-3xl  font-semibold">Bienvenido a Mi Libreta de Claves</h1>
-          <p className=" mb-2 text-base md:text-xl  ">Guarda de forma segura tus cuentas y contraseñas</p>
+          <h1 className=" mb-2 text-xl md:text-3xl  font-semibold">Bienvenido a PasswordBooklet</h1>
+          <p className=" mb-2 text-base md:text-xl  ">Guarda y administra de forma segura tus cuentas y contraseñas</p>
         </div>
         
       </div>
