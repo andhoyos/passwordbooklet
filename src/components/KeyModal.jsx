@@ -51,7 +51,6 @@ const KeyModal = ({
 
   const copyToClipboard = (pass) => {
     navigator.clipboard.writeText(pass);
-    console.log(pass);
     setMessage({ content: "Texto copiado" });
     setTimeout(() => {
       setMessage({ content: "" });
@@ -106,6 +105,11 @@ const KeyModal = ({
           )}
           {showAccountsModal && (
             <div className="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
+              {message.content && (
+                <div className="bg-slate-50 p-2 mb-2 rounded-md absolute left-0 bottom-14">
+                  {message.content}
+                </div>
+              )}
               <div className="sm:flex sm:items-start">
                 <div className="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left w-full">
                   <h3 className="w-fit text-xl leading-6 font-bold bg-gradient-to-r from-rose-400 via-fuchsia-500 to-indigo-500 bg-clip-text text-transparent">
@@ -155,7 +159,10 @@ const KeyModal = ({
                             <button
                               onClick={() => copyToClipboard(account.password)}
                               className="text-gray-600 hover:scale-110 duration-200 hover:cursor-pointer min-w-fit py-1 disabled:cursor-not-allowed disabled:opacity-50"
-                              disabled={isVerificationValidated ? false : true}
+                              disabled={
+                                session.user.twoFactorAuthEnabled &&
+                                !isVerificationValidated
+                              }
                             >
                               <Image
                                 src={copy}
