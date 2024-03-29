@@ -3,6 +3,7 @@ import { FormEvent, useState } from "react";
 import axios, { AxiosError } from "axios";
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
+import { generateRSAKeyPair } from "@/helpers/createKey";
 
 function RegisterPage() {
   const [message, setMessage] = useState({ type: "", content: "" });
@@ -16,6 +17,11 @@ function RegisterPage() {
 
     try {
       const formData = new FormData(event.currentTarget);
+
+      // Generar clave RSA
+      // const rsaKeyPair = await generateRSAKeyPair();
+
+      // console.log(rsaKeyPair);
 
       const response = await axios.post("/api/auth/signup", {
         username: formData.get("username"),
@@ -58,13 +64,14 @@ function RegisterPage() {
             {message.content}
           </div>
         )}
-        <h1 className="md:text-3xl text-2xl font-bold mb-7 ">Signup</h1>
+        <h1 className="md:text-3xl text-2xl font-bold mb-7 ">Registro</h1>
 
         <label className="text-slate-400">Username:</label>
         <input
           type="text"
           placeholder="Username"
           name="username"
+          required
           className="bg-slate-100 px-4 py-2 block mb-2 w-full rounded-md"
         />
 
@@ -73,6 +80,7 @@ function RegisterPage() {
           type="email"
           placeholder="email@example.com"
           name="email"
+          required
           className="bg-slate-100 px-4 py-2 block mb-2 w-full rounded-md"
         />
 
@@ -81,17 +89,18 @@ function RegisterPage() {
           type="password"
           placeholder="*******"
           name="password"
+          required
           className="bg-slate-100 px-4 py-2 block mb-2 w-full rounded-md"
         />
 
         <button className="rounded-lg border border-indigo-500 bg-indigo-500 text-white font-semibold shadow-sm transition-all hover:border-indigo-700 hover:bg-indigo-700 focus:ring focus:ring-indigo-200 disabled:cursor-not-allowed disabled:border-indigo-500 disabled:bg-indigo-500 disabled:opacity-80 px-4 py-2 block w-full mt-4">
-          Signup
+          Registro
         </button>
 
         <p className="pt-5 px-3">
-          Already have an acount ?
+          ¿Ya tienes una cuenta?
           <a className="font-semibold text-indigo-500  px-3" href="/login">
-            Sign in
+            Ingresar
           </a>
         </p>
       </form>

@@ -143,7 +143,7 @@ function VerificationTOTP({ onSuccess }) {
   };
 
   return (
-    <div className="flex  justify-center items-center md:mt-14 mt-20">
+    <div className="flex  justify-center items-center py-5">
       <div className="bg-white text-slate-500 px-8 max-w-md  w-96 mx-auto  rounded-lg">
         {message.content && (
           <div
@@ -154,10 +154,13 @@ function VerificationTOTP({ onSuccess }) {
             {message.content}
           </div>
         )}
+
         <h1 className="text-3xl font-bold py-2">Verification code</h1>
 
-        <label className="text-slate-400">Code:</label>
-        <div className="flex justify-between">
+        <label className="text-slate-400">
+          Ingresa el codigo generado por la aplicación de autenticación
+        </label>
+        <div className="flex justify-between mt-2">
           {[0, 1, 2, 3, 4, 5].map((index) => (
             <div key={index} className="w-10 h-12">
               <input

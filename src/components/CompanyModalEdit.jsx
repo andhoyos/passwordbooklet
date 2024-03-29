@@ -82,13 +82,38 @@ const CompanyModalEdit = ({
         </span>
 
         <div className="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg w-full">
-          <div className="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
+          <div className="px-4 pt-5 text-end">
+            <button
+              type="button"
+              className=" text-gray-200 hover:bg-zinc-900 bg-zinc-800 rounded-lg text-sm w-8 h-8  inline-flex justify-center items-center hover:text-white"
+              data-modal-hide="popup-modal"
+              onClick={closeModal}
+            >
+              <svg
+                className="w-3 h-3"
+                aria-hidden="true"
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 14 14"
+              >
+                <path
+                  stroke="currentColor"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2"
+                  d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"
+                />
+              </svg>
+              <span className="sr-only">Close modal</span>
+            </button>
+          </div>
+          <div className="bg-white px-4 pt-3 pb-6">
             <div className="sm:flex sm:items-start">
-              <div className="mt-3  sm:mt-0 sm:ml-4 sm:text-left w-full">
+              <div className="mt-3  sm:mt-0 sm:text-left w-full">
                 <form
                   onSubmit={handleSubmit}
                   ref={formRef}
-                  className="bg-white text-slate-500 md:px-8 px-4 py-6 max-w-md md:w-96 w-full mx-auto  rounded-lg"
+                  className="bg-white text-slate-500 md:px-8 px-4 pb-6 pt-1 max-w-md md:w-96 w-full mx-auto  rounded-lg"
                 >
                   {message.content && (
                     <div
@@ -99,7 +124,7 @@ const CompanyModalEdit = ({
                       {message.content}
                     </div>
                   )}
-                  <h1 className="text-3xl font-bold py-2">Company Edit</h1>
+                  <h1 className="text-3xl font-bold py-2">Editar Compañia</h1>
 
                   <label className="text-slate-400">Company:</label>
                   <input
@@ -126,15 +151,6 @@ const CompanyModalEdit = ({
                 </form>
               </div>
             </div>
-          </div>
-          <div className="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
-            <button
-              onClick={closeModal}
-              type="button"
-              className="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-zinc-800 text-base font-medium text-white hover:bg-zinc-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-zinc-800 sm:ml-3 sm:w-auto sm:text-sm"
-            >
-              Cerrar
-            </button>
           </div>
         </div>
       </div>

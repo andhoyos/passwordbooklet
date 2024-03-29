@@ -46,8 +46,6 @@ export async function GET(request) {
       })
     );
 
-    console.log("esta es la data", decryptedKeys);
-
     return NextResponse.json(decryptedKeys);
   } catch (error) {
     console.error("Error fetching keys:", error);
@@ -78,8 +76,6 @@ export async function POST(request) {
       account.password = encryptedPassword.ciphertext;
       account.iv = encryptedPassword.iv;
     }
-
-    console.log("esto es accounts encriptado", accounts);
     await connectDB();
     if (companyId) {
       const updateKey = await Key.findOneAndUpdate(
@@ -205,7 +201,6 @@ export async function DELETE(request) {
   const data = await request.json();
   const { accountId, companyId, user } = data;
   const session = user;
-  console.log("esta es la cuenta id", data);
   if (!session.user) {
     return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
   }

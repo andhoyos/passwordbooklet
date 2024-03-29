@@ -60,7 +60,7 @@ function LoginPage() {
             {message.content}
           </div>
         )}
-        <h1 className="md:text-3xl text-2xl font-bold mb-7">Signin</h1>
+        <h1 className="md:text-3xl text-2xl font-bold mb-7">Iniciar sesión</h1>
 
         <label className="text-slate-400">Username:</label>
         <input
@@ -68,6 +68,7 @@ function LoginPage() {
           placeholder="Username"
           className="bg-slate-100 px-4 py-2 block mb-2 w-full rounded-md"
           name="username"
+          required
         />
 
         <label className=" text-slate-400">Password:</label>
@@ -76,21 +77,22 @@ function LoginPage() {
           placeholder="*******"
           className="bg-slate-100 px-4 py-2 block mb-2 w-full rounded-md"
           name="password"
+          required
         />
         <p className="text-right">
           <a className="font-semibold" href="/forgot-password">
-            Forgot Password ?
+            Has olvidado tu contraseña ?
           </a>
         </p>
 
         <button className="rounded-lg border border-indigo-500 bg-indigo-500 text-white font-semibold shadow-sm transition-all hover:border-indigo-700 hover:bg-indigo-700 focus:ring focus:ring-indigo-200 disabled:cursor-not-allowed disabled:border-indigo-500 disabled:bg-indigo-500 disabled:opacity-80 px-4 py-2 block w-full mt-4">
-          Login
+          Ingresar
         </button>
 
         <p className="pt-5 px-3">
-          Don&apos;t have an account?
+          ¿No tienes una cuenta?
           <a className="font-semibold text-indigo-500  px-3" href="/register">
-            Sign up
+            Registrarse
           </a>
         </p>
       </form>
