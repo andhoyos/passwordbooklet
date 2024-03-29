@@ -3,7 +3,6 @@ import { FormEvent, useState } from "react";
 import axios, { AxiosError } from "axios";
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
-import { generateRSAKeyPair } from "@/helpers/createKey";
 
 function RegisterPage() {
   const [message, setMessage] = useState({ type: "", content: "" });
@@ -17,11 +16,6 @@ function RegisterPage() {
 
     try {
       const formData = new FormData(event.currentTarget);
-
-      // Generar clave RSA
-      // const rsaKeyPair = await generateRSAKeyPair();
-
-      // console.log(rsaKeyPair);
 
       const response = await axios.post("/api/auth/signup", {
         username: formData.get("username"),
