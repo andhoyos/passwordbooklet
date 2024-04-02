@@ -94,7 +94,7 @@ function RegisterPage() {
         <p className="pt-5 px-3">
           ¿Ya tienes una cuenta?
           <a className="font-semibold text-indigo-500  px-3" href="/login">
-            Ingresar
+          Iniciar sesión
           </a>
         </p>
       </form>

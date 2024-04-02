@@ -66,7 +66,7 @@ export default function Navbar() {
                       className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
                       onClick={handleItemClick}
                     >
-                      Keys
+                      Mis Claves
                     </Link>
                   </li>
                   <li>
@@ -87,7 +87,7 @@ export default function Navbar() {
                       signOut();
                     }}
                   >
-                    Sign out
+                    Cerrar Sesion
                   </p>
                 </div>
               </div>

@@ -8,7 +8,7 @@ export default function Home() {
     <main className="flex flex-col items-center justify-center min-h-screen py-20">
       <section className="text-center mb-16">
         <h1 className="text-4xl font-bold mb-4 text-slate-500">Bienvenido a PasswordBooklet</h1>
-        <p className="text-lg">Guarda y administra de forma segura tus cuentas y contraseñas</p>
+        <p className="text-lg px-5">Guarda y administra de forma segura tus cuentas y contraseñas</p>
       </section>
 
       <section className="flex flex-wrap justify-center md:mt-10 w-full gap-8 mb-16">
@@ -31,9 +31,10 @@ export default function Home() {
       </section>
 
       <section className="text-center mb-12">
-        <h2 className="text-2xl font-bold mb-4">¿Por qué elegir PasswordBooklet?</h2>
-        <p className="text-lg">Descubre cómo nuestros usuarios están protegiendo sus cuentas con PasswordBooklet.</p>
-        {/* Aquí podrías incluir testimonios de usuarios */}
+        <h2 className="text-2xl font-bold mb-4 px-5">¿Por qué elegir PasswordBooklet?</h2>
+        <p className="text-lg px-5">Descubre cómo nuestros usuarios están protegiendo sus cuentas con PasswordBooklet.</p>
+        {/* Aquí testimonios de usuarios */}
+        <p className="text-lg pt-2 text-indigo-300">Coming soon...</p>
       </section>
 
       <div className="flex items-center gap-4 w-80 text-sm ">
@@ -42,7 +43,7 @@ export default function Home() {
           className="flex-1 rounded-lg border border-indigo-500 bg-indigo-500 py-2.5 md:py-1.5 text-center text-sm font-semibold text-white shadow-sm transition-all hover:border-indigo-700 hover:bg-indigo-700 focus:ring focus:ring-indigo-200 disabled:cursor-not-allowed disabled:border-indigo-500 disabled:bg-indigo-500 disabled:opacity-80"
           
           rel="noopener noreferrer"
-        >Registro
+        >Crear Cuenta
         
         </a>
 

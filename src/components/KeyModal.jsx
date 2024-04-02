@@ -131,7 +131,7 @@ const KeyModal = ({
           {showAccountsModal && (
             <div className="bg-white px-4 pt-3 pb-6">
               {message.content && (
-                <div className="bg-slate-50 p-2 mb-2 rounded-md absolute left-0 bottom-14">
+                <div className="bg-slate-50 p-2 mb-2 rounded-md absolute left-0 bottom-0">
                   {message.content}
                 </div>
               )}
