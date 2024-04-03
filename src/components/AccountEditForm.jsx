@@ -92,8 +92,8 @@ export default function AccountEditForm({
             {message.content}
           </div>
         )}
-        <h1 className="text-4xl font-bold  text-slate-700">Account Edit</h1>
-        <p className="text-2xl font-bold mb-7 text-slate-700">{company}</p>
+        <h1 className="text-4xl font-bold  text-slate-700">Editar Cuenta</h1>
+        <p className="text-2xl font-bold mb-7 text-slate-600">{company}</p>
 
         <label className="text-slate-500">Cuenta:</label>
         <input

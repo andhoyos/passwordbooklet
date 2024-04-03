@@ -96,7 +96,7 @@ const EditAccountPage = () => {
             {message.content}
           </div>
         )}
-        <h1 className="md:text-3xl text-2xl font-bold  ">Account Edit</h1>
+        <h1 className="md:text-3xl text-2xl font-bold  ">Editar Cuenta</h1>
         <p className="md:text-2xl text-xl font-bold mb-7">{searchCompany}</p>
 
         <label className="text-slate-400">Cuenta:</label>

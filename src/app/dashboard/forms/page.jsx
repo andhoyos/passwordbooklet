@@ -104,10 +104,10 @@ const KeyForm = () => {
           </div>
         )}
         <h1 className="md:text-3xl text-2xl font-bold mb-7">
-          {isCompanyId ? "Update Key" : "New Key"}
+          {isCompanyId ? "Actualizar registro" : "Nuevo Registro"}
         </h1>
 
-        <label className="text-slate-400">Empresa:</label>
+        <label className="text-slate-400">Compañia:</label>
         <input
           type="text"
           placeholder="company"

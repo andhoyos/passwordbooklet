@@ -92,7 +92,7 @@ function KeysPage() {
   if (keysList.length === 0) {
     return (
       <div className="h-[calc(100vh-4rem)] flex flex-col gap-y-10 items-center justify-center">
-        <h1 className="font-bold md:text-3xl text-2xl">Keys</h1>
+        <h1 className="font-bold md:text-3xl text-2xl">Mis Claves</h1>
         <p>No hay claves registradas.</p>
         <button
           className="rounded-lg border border-indigo-500 bg-indigo-500 text-white shadow-sm transition-all hover:border-indigo-700 hover:bg-indigo-700 focus:ring focus:ring-indigo-200 disabled:cursor-not-allowed disabled:border-indigo-500 disabled:bg-indigo-500 disabled:opacity-80 px-4 py-2 block mt-4"
@@ -109,17 +109,17 @@ function KeysPage() {
   return (
     <div className="flex flex-col gap-y-10 items-center justify-center md:pb-auto pb-5">
       <div className="w-full md:w-auto min-w-96 px-8 md:px-0">
-        <h1 className="font-bold text-3xl mb-3">Keys</h1>
+        <h1 className="font-bold text-3xl mb-3">Mis Claves</h1>
         <input
           type="text"
-          placeholder="Buscar keys..."
+          placeholder="Buscar Compañia..."
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
           className="rounded-lg border border-gray-300 px-3 py-1 w-full focus:outline-none focus:ring focus:border-blue-500"
         />
       </div>
 
-      <div className="grid grid-cols-3 w-full md:w-auto gap-2 max-[500px]:grid-cols-1 px-3 md:mx-14 ">
+      <div className="grid grid-cols-3 w-full min-w-full md:w-auto gap-2 max-[500px]:grid-cols-1 px-3 md:mx-14 ">
         {searchTerm
           ? filteredKeys.map((key) => (
               <div
@@ -172,7 +172,7 @@ function KeysPage() {
           handleNewKey();
         }}
       >
-        Add new
+        Agregar
       </button>
     </div>
   );

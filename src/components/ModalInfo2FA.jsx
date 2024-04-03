@@ -152,7 +152,7 @@ const Info2FA = ({ closeModal }) => {
                         </Link>
                         <Link
                           className="inline-flex items-center gap-1 border-2 rounded-md px-4 py-2"
-                          href="https://play.google.com/store/apps/details?id=com.google.android.apps.authenticator2&hl=es&gl=US"
+                          href="https://play.google.com/store/apps/details?id=com.azure.authenticator"
                         >
                           <Image
                             src={playLogo}
@@ -160,7 +160,7 @@ const Info2FA = ({ closeModal }) => {
                             height={20}
                             alt="playLogo"
                           />
-                          Google Authenticator{" "}
+                          Authenticator{" "}
                         </Link>
                       </div>
                     </>

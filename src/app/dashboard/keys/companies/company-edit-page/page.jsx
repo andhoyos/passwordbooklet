@@ -87,7 +87,7 @@ function KeysPage() {
   if (keysList.length === 0) {
     return (
       <div className="h-[calc(100vh-4rem)] flex flex-col gap-y-10 items-center justify-center">
-        <h1 className="font-bold md:text-3xl text-2xl">Keys</h1>
+        <h1 className="font-bold md:text-3xl text-2xl">Mis Claves</h1>
         <p>No hay claves registradas.</p>
         <button
           className="rounded-lg border border-indigo-500 bg-indigo-500 text-white shadow-sm transition-all hover:border-indigo-700 hover:bg-indigo-700 focus:ring focus:ring-indigo-200 disabled:cursor-not-allowed disabled:border-indigo-500 disabled:bg-indigo-500 disabled:opacity-80 px-4 py-2 block mt-4"
@@ -104,15 +104,15 @@ function KeysPage() {
   return (
     <div className="flex flex-col gap-y-10 items-center justify-center md:pb-auto pb-5">
       <div className="container mx-auto my-12 p-4 shadow-md bg-white rounded-md md:w-3/4 w-auto">
-        <h1 className="text-2xl font-bold mb-4">Companies </h1>
+        <h1 className="text-2xl font-bold mb-4">Compañias </h1>
         <table className="min-w-full divide-y divide-slate-500 table-auto">
           <thead>
             <tr>
               <th className="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider border-b">
-                Company
+                Compañia
               </th>
               <th className="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider border-b">
-                Actions
+                Acciones
               </th>
             </tr>
           </thead>
@@ -130,13 +130,13 @@ function KeysPage() {
                     className=" py-2.5 md:py-1.5 mx-2 text-green-500"
                     onClick={() => handleCompanyClick(key)}
                   >
-                    Edit
+                    Editar
                   </button>
                   <button
                     className=" py-2.5 md:py-1.5 mx-2 text-red-500"
                     onClick={() => handleCompanyClickDelete(key)}
                   >
-                    Delete
+                    Eliminar
                   </button>
                 </td>
               </tr>
@@ -148,7 +148,7 @@ function KeysPage() {
                   href="/dashboard/forms"
                   className=" px-4 py-2.5 text-indigo-500"
                 >
-                  Add new
+                  Agregar
                 </a>
               </td>
             </tr>

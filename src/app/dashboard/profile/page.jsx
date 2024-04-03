@@ -66,10 +66,10 @@ function ProfilePage() {
 
   return (
     <div className=" flex flex-col gap-y-10 items-center justify-center">
-      <h1 className="font-bold md:text-3xl text-2xl">Profile</h1>
+      <h1 className="font-bold md:text-3xl text-2xl mt-10">Administrar</h1>
 
       {status === "authenticated" && (
-        <div className="flex flex-wrap justify-center mt-10 w-full">
+        <div className="flex flex-wrap justify-center w-full">
           <div className="p-4 max-w-sm w-full">
             <div className="flex rounded-lg h-full bg-white p-8 flex-col shadow-lg">
               <div className="flex items-center mb-3">
@@ -86,15 +86,20 @@ function ProfilePage() {
                     <path d="M22 12h-4l-3 9L9 3l-3 9H2"></path>
                   </svg>
                 </div>
-                <h2 className=" text-lg font-medium">Perfil</h2>
+                <h2 className=" text-xl font-medium">Perfil</h2>
               </div>
               <div className="flex flex-col justify-between flex-grow">
                 <div className="leading-relaxed text-base ">
-                  <h3>Username: {session.user.username}</h3>
-                  <h3>Email: {session.user.email}</h3>
-                  <h3>Status: {status}</h3>
                   <h3>
-                    TwoFactorEnabled:{" "}
+                    <span className=" font-medium">Username:</span>{" "}
+                    {session.user.username}
+                  </h3>
+                  <h3>
+                    <span className=" font-medium">Email:</span>{" "}
+                    {session.user.email}
+                  </h3>
+                  <h3>
+                    <span className=" font-medium">Autenticacion 2FA:</span>{" "}
                     {session.user.twoFactorAuthEnabled
                       ? "Activado"
                       : "Desactivado"}
@@ -160,7 +165,7 @@ function ProfilePage() {
                     <path d="M22 12h-4l-3 9L9 3l-3 9H2"></path>
                   </svg>
                 </div>
-                <h2 className=" text-lg font-medium">Keys</h2>
+                <h2 className=" text-xl font-medium">Compañias</h2>
               </div>
               <div className="flex flex-col justify-between flex-grow ">
                 <div className="leading-relaxed text-base ">
@@ -209,7 +214,7 @@ function ProfilePage() {
                     <path d="M22 12h-4l-3 9L9 3l-3 9H2"></path>
                   </svg>
                 </div>
-                <h2 className=" text-lg font-medium">Accounts</h2>
+                <h2 className=" text-xl font-medium">Cuentas</h2>
               </div>
               <div className="flex flex-col justify-between flex-grow">
                 <div className="leading-relaxed text-base ">

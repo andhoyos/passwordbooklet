@@ -126,7 +126,7 @@ const CompanyModalEdit = ({
                   )}
                   <h1 className="text-3xl font-bold py-2">Editar Compañia</h1>
 
-                  <label className="text-slate-400">Company:</label>
+                  <label className="text-slate-400">Compañia:</label>
                   <input
                     type="text"
                     name="company"
