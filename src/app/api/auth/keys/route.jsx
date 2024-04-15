@@ -86,15 +86,26 @@ export async function POST(request) {
       console.log(updateKey);
       return NextResponse.json(updateKey);
     } else {
-      const newKey = await Key.create({
-        company,
-        accounts:
-          Array.isArray(accounts) && accounts.length > 0 ? accounts : [],
-        user: session.user._id,
-      });
+      const companyName = await Key.findOne({ company });
+      if (companyName) {
+        const updateKey = await Key.findOneAndUpdate(
+          { company: company, user: session.user._id },
+          { $push: { accounts: { $each: accounts } } },
+          { new: true }
+        );
+        console.log(updateKey);
+        return NextResponse.json(updateKey);
+      } else {
+        const newKey = await Key.create({
+          company,
+          accounts:
+            Array.isArray(accounts) && accounts.length > 0 ? accounts : [],
+          user: session.user._id,
+        });
 
-      console.log(newKey);
-      return NextResponse.json(newKey);
+        console.log(newKey);
+        return NextResponse.json(newKey);
+      }
     }
   } catch (error) {
     console.error("Error creating/updating key:", error);

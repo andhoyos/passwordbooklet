@@ -108,7 +108,7 @@ function KeysPage() {
 
   return (
     <div className="flex flex-col gap-y-10 items-center justify-center md:pb-auto pb-5">
-      <div className="w-full md:w-auto min-w-96 px-8 md:px-0">
+      <div className="w-full md:w-auto min-w-96 px-8 md:px-0 pt-8 md:pt-12">
         <h1 className="font-bold text-3xl mb-3">Mis Claves</h1>
         <input
           type="text"

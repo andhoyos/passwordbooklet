@@ -50,10 +50,13 @@ const KeyForm = () => {
         });
         return;
       }
+      const capitalizedCompany =
+        company.charAt(0).toUpperCase() + company.slice(1);
+      formData.get("company", capitalizedCompany);
 
       const response = await axios.post("/api/auth/keys", {
         companyId: searchCompanyId,
-        company: formData.get("company"),
+        company: capitalizedCompany,
         accounts: [
           {
             name: formData.get("account"),
@@ -63,7 +66,7 @@ const KeyForm = () => {
         ],
         user: session,
       });
-      // event.currentTarget.reset();
+
       if (formRef.current) {
         formRef.current.reset();
       }
@@ -104,7 +107,7 @@ const KeyForm = () => {
           </div>
         )}
         <h1 className="md:text-3xl text-2xl font-bold mb-7">
-          {isCompanyId ? "Actualizar registro" : "Nuevo Registro"}
+          {isCompanyId ? "Actualizar Registro" : "Nuevo Registro"}
         </h1>
 
         <label className="text-slate-400">Compañia:</label>
