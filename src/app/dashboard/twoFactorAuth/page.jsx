@@ -47,7 +47,7 @@ function CodeAuth() {
   };
 
   const handleVerificationSuccess = () => {
-    sessionStorage.setItem("isVerificationValidated", "true");
+    sessionStorage.setItem("isVerificationValidated", "false");
     setTimeout(() => {
       router.push("/dashboard/profile");
     }, "1000");

@@ -7,9 +7,11 @@ import Link from "next/link";
 import Image from "next/image";
 import playLogo from "@/images/playLogo.svg";
 import axios from "axios";
+import VerificationTOTP from "@/components/VerificationModal";
 
 const Info2FA = ({ closeModal }) => {
   const [user2FA, setUser2FA] = useState(false);
+  const [showVerificationModal, setShowVerificationModal] = useState(false);
   const [message, setMessage] = useState("");
   const { data: session } = useSession();
   const router = useRouter();
@@ -28,6 +30,12 @@ const Info2FA = ({ closeModal }) => {
 
   const bgError = "bg-red-400";
   const bgSuccess = "bg-green-400";
+
+  const handleVerificationSuccess = () => {
+    delete2FA();
+    setShowVerificationModal(false);
+    setUser2FA(false);
+  };
 
   const delete2FA = async () => {
     try {
@@ -125,7 +133,8 @@ const Info2FA = ({ closeModal }) => {
                       <div className="flex  items-center gap-4 md:w-80 w-auto text-sm md:py-6 py-10">
                         <button
                           className="flex-1 rounded-lg border border-red-500 bg-red-500 py-2.5 md:py-1.5 text-center text-sm font-semibold text-white shadow-sm transition-all hover:border-red-700 hover:bg-red-700 focus:ring focus:ring-red-200 disabled:cursor-not-allowed disabled:border-red-500 disabled:bg-red-500 disabled:opacity-80"
-                          onClick={delete2FA}
+                          // onClick={delete2FA}
+                          onClick={() => setShowVerificationModal(true)}
                         >
                           Desactivar
                         </button>
@@ -164,6 +173,9 @@ const Info2FA = ({ closeModal }) => {
                         </Link>
                       </div>
                     </>
+                  )}
+                  {showVerificationModal && (
+                    <VerificationTOTP onSuccess={handleVerificationSuccess} />
                   )}
                 </div>
               </div>
