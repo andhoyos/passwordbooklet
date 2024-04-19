@@ -44,7 +44,7 @@ function RegisterPage() {
   };
 
   return (
-    <div className="flex justify-center items-center md:mt-auto mt-20">
+    <div className="flex justify-center items-center">
       <form
         onSubmit={handleSubmit}
         className="bg-white text-slate-500 px-8 py-10 max-w-md w-96 mx-auto shadow-lg  rounded-lg"
@@ -94,7 +94,7 @@ function RegisterPage() {
         <p className="pt-5 px-3">
           ¿Ya tienes una cuenta?
           <a className="font-semibold text-indigo-500  px-3" href="/login">
-          Iniciar sesión
+            Iniciar sesión
           </a>
         </p>
       </form>

@@ -62,7 +62,7 @@ function CodeAuth() {
   };
 
   return (
-    <div className="flex justify-center items-center md:mt-14 mt-20 px-4">
+    <div className="flex justify-center items-center px-4">
       {message.content && (
         <div className="bg-slate-50 p-2 mb-2 rounded-md absolute">
           {message.content}

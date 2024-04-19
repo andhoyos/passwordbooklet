@@ -18,8 +18,12 @@ export default function RootLayout({ children }) {
         <Providers>
           <Navbar />
           <SessionTimer />
-          <div className="container mx-auto">{children}</div>
-        </Providers></body>
+          <div className="container mx-auto py-20">{children}</div>
+        </Providers>
+        {/* <footer className="bg-gray-800 text-white py-4 text-center">
+          <p>&copy; 2024 PasswordBooklet. Todos los derechos reservados.</p>
+        </footer> */}
+      </body>
     </html>
   )
 }

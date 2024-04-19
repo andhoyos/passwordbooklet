@@ -66,7 +66,7 @@ function ProfilePage() {
 
   return (
     <div className=" flex flex-col gap-y-10 items-center justify-center">
-      <h1 className="font-bold md:text-3xl text-2xl mt-10">Administrar</h1>
+      <h1 className="font-bold md:text-3xl text-2xl">Administrar</h1>
 
       {status === "authenticated" && (
         <div className="flex flex-wrap justify-center w-full">
