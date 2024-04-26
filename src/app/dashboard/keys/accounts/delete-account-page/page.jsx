@@ -51,7 +51,7 @@ const DeleteAccountPage = () => {
   };
 
   return (
-    <div className="flex flex-col gap-y-10 items-center justify-center mt-28">
+    <div className="flex flex-col gap-y-10 items-center justify-center">
       {message.content && (
         <div
           className={`${
