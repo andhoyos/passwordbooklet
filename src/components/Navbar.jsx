@@ -61,13 +61,25 @@ export default function Navbar() {
                     </Link>
                   </li>
                   <li>
-                    <Link
-                      href="/dashboard/keys"
-                      className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
-                      onClick={handleItemClick}
-                    >
-                      Mis Claves
-                    </Link>
+                    <details>
+                      <summary className="cursor-pointer px-4 py-2">
+                        <span>Mis Claves</span>
+                      </summary>
+                      <Link
+                        href="/dashboard/keys"
+                        className="block pl-8 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
+                        onClick={handleItemClick}
+                      >
+                        Ver Todas
+                      </Link>
+                      <Link
+                        href="/dashboard/forms"
+                        className="block pl-8 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
+                        onClick={handleItemClick}
+                      >
+                        Agregar
+                      </Link>
+                    </details>
                   </li>
                   <li>
                     <Link

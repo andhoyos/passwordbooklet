@@ -4,7 +4,7 @@ export default function Home() {
   return (
     <main className="flex flex-col items-center justify-center min-h-screen">
       <section className="text-center mb-16">
-        <h1 className="text-4xl font-bold mb-4 text-slate-500">Bienvenido a PasswordBooklet</h1>
+        <h1 className="text-4xl font-bold mb-4 text-slate-500">Bienvenido a <span className="transition-all duration-300 hover:bg-gradient-to-r hover:from-rose-400 hover:via-fuchsia-500 hover:to-indigo-500 hover:bg-clip-text hover:text-transparent">PasswordBooklet</span></h1>
         <p className="text-lg px-5">Guarda y administra de forma segura tus cuentas y contraseñas</p>
       </section>
       <SectionIndex/>
