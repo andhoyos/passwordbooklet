@@ -60,7 +60,7 @@ export default function ResetPasswordPage() {
   };
 
   return (
-    <div className="flex justify-center items-center md:mt-auto mt-20">
+    <div className="flex justify-center items-center md:mt-auto">
       <form
         onSubmit={handleSubmit}
         className="bg-white text-slate-500 px-8 py-10 max-w-md w-96 mx-auto shadow-lg  rounded-lg"

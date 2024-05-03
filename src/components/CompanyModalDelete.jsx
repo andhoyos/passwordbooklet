@@ -88,7 +88,7 @@ const DeleteCompanyPage = ({
           </div>
           <div className="bg-white px-4 pt-3 pb-6">
             <div className="sm:flex sm:items-start">
-              <div className="mt-3  sm:mt-0 sm:ml-4 sm:text-left w-full">
+              <div className="mt-3  sm:mt-0  sm:text-left w-full">
                 <div className="bg-white text-slate-500 md:px-8 px-4 py-6 max-w-md md:w-96 w-full mx-auto  rounded-lg">
                   {message.content && (
                     <div

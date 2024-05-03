@@ -3,7 +3,7 @@ import ForgotPassword from "@/components/ForgotPassword";
 
 function Forgot() {
   return (
-    <div className="flex justify-center items-center mt-20">
+    <div className="flex justify-center items-center">
       <ForgotPassword />
     </div>
   );
