@@ -126,8 +126,6 @@ const SectionIndex = () => {
             ))}
           </Slider>
         </div>
-        {/* Aquí testimonios de usuarios */}
-        <p className="text-lg pt-2 text-indigo-300">Coming soon...</p>
       </section>
     </>
   );

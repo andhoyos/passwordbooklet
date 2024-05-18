@@ -3,7 +3,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { useSession, signOut } from "next-auth/react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import logo from "@/images/logo.png";
 import user from "@/images/user.svg";
 
@@ -11,6 +11,14 @@ export default function Navbar() {
   const { data: session, status } = useSession();
 
   const [isOpen, setIsOpen] = useState(false);
+
+  useEffect(() => {
+    document.addEventListener("click", (e) => {
+      if (!e.target.closest(".menu")) {
+        setIsOpen(false);
+      }
+    });
+  }, [isOpen]);
 
   const toggleDropdown = () => {
     setIsOpen(!isOpen);
@@ -32,9 +40,8 @@ export default function Navbar() {
             PasswordBooklet
           </h1>
         </Link>
-
-        {status === "authenticated" && (
-          <div className="relative">
+        {status === "authenticated" ? (
+          <div className="relative menu">
             <button
               onClick={toggleDropdown}
               className="flex text-sm bg-slate-500 rounded-full md:me-0 focus:ring-4 focus:ring-gray-300 dark:focus:ring-gray-600"
@@ -90,6 +97,15 @@ export default function Navbar() {
                       Autenticación 2FA
                     </Link>
                   </li>
+                  <li>
+                    <Link
+                      href="/dashboard/testimonials"
+                      className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
+                      onClick={handleItemClick}
+                    >
+                      Calificar
+                    </Link>
+                  </li>
                 </ul>
                 <div className="py-2">
                   <p
@@ -104,6 +120,53 @@ export default function Navbar() {
                 </div>
               </div>
             )}
+          </div>
+        ) : (
+          <div className="relative menu">
+            <button
+              onClick={toggleDropdown}
+              className="flex text-sm bg-slate-500 rounded-full md:me-0 focus:ring-4 focus:ring-gray-300 dark:focus:ring-gray-600"
+              type="button"
+            >
+              <svg
+                className="w-10"
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M5 12h14M12 5l7 7m-7 7l7-7"
+                />
+              </svg>
+            </button>
+            <div
+              className={`absolute right-0 z-10 bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700 dark:divide-gray-600`}
+              style={{ display: isOpen ? "block" : "none" }}
+            >
+              <ul className="py-2 text-sm text-gray-700 dark:text-gray-200">
+                <li>
+                  <Link
+                    href="/login"
+                    className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
+                    onClick={handleItemClick}
+                  >
+                    Iniciar Sesion
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    href="/register"
+                    className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
+                    onClick={handleItemClick}
+                  >
+                    Crear Cuenta
+                  </Link>
+                </li>
+              </ul>
+            </div>
           </div>
         )}
       </div>
