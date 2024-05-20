@@ -1,4 +1,9 @@
 <?xml version="1.0" ?><svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><g data-name="37. Zoom in" id="_37._Zoom_in"><style>svg * {
-  fill: rgb(229 231 235 / 1)
-}
+        fill: #333;
+      }
+      @media (prefers-color-scheme: dark) {
+        svg * {
+          fill: rgb(229, 231, 235);
+        }
+      }
     </style><path d="M15,0A8.989,8.989,0,0,0,7.975,14.611L.293,22.293a1,1,0,1,0,1.414,1.414l7.682-7.682A9,9,0,1,0,15,0Zm0,16a7,7,0,1,1,7-7A7.008,7.008,0,0,1,15,16Z"/><path d="M18,8H16V6a1,1,0,0,0-2,0V8H12a1,1,0,0,0,0,2h2v2a1,1,0,0,0,2,0V10h2a1,1,0,0,0,0-2Z"/></g></svg>
