@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from "react";
 import { useSession } from "next-auth/react";
 import { authenticator } from "otplib";
 import axios from "axios";
+import Notification from "@/components/Notification";
 
 function VerificationTOTP({ onSuccess }) {
   const { data: session } = useSession();
@@ -18,8 +19,9 @@ function VerificationTOTP({ onSuccess }) {
 
   const inputRefs = useRef([]);
 
-  const bgError = "bg-red-400";
-  const bgSuccess = "bg-green-400";
+  const closeNotification = () => {
+    setMessage({ type: "", content: "" });
+  };
 
   useEffect(() => {
     const fetchTOTPSecret = async () => {
@@ -145,16 +147,6 @@ function VerificationTOTP({ onSuccess }) {
   return (
     <div className="flex  justify-center items-center py-5">
       <div className="bg-white text-slate-500 px-8 max-w-md  w-96 mx-auto  rounded-lg">
-        {message.content && (
-          <div
-            className={`${
-              message.type === "error" ? `${bgError}` : `${bgSuccess}`
-            } text-white p-2 mb-2 rounded-md`}
-          >
-            {message.content}
-          </div>
-        )}
-
         <h1 className="text-3xl font-bold py-2">Verification code</h1>
 
         <label className="text-slate-400">
@@ -186,6 +178,13 @@ function VerificationTOTP({ onSuccess }) {
           </button>
         </div>
       </div>
+      {message.content && (
+        <Notification
+          message={message.content}
+          type={message.type}
+          onClose={closeNotification}
+        />
+      )}
     </div>
   );
 }

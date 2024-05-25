@@ -4,13 +4,15 @@ import { useState } from "react";
 import axios from "axios";
 import { getTokenFromURL } from "@/helpers/resetLink";
 import { useRouter } from "next/navigation";
+import Notification from "@/components/Notification";
 
 export default function ResetPasswordPage() {
   const [message, setMessage] = useState("");
   const router = useRouter();
 
-  const bgError = "bg-red-400";
-  const bgSuccess = "bg-green-400";
+  const closeNotification = () => {
+    setMessage({ type: "", content: "" });
+  };
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -65,15 +67,6 @@ export default function ResetPasswordPage() {
         onSubmit={handleSubmit}
         className="bg-white text-slate-500 px-8 py-10 max-w-md w-96 mx-auto shadow-lg  rounded-lg"
       >
-        {message.content && (
-          <div
-            className={`${
-              message.type === "error" ? `${bgError}` : `${bgSuccess}`
-            } text-white p-2 mb-2 rounded-md`}
-          >
-            {message.content}
-          </div>
-        )}
         <h1 className="md:text-3xl text-2xl font-bold mb-7 ">
           Change Password
         </h1>
@@ -97,6 +90,13 @@ export default function ResetPasswordPage() {
           Cambiar contraseña
         </button>
       </form>
+      {message.content && (
+        <Notification
+          message={message.content}
+          type={message.type}
+          onClose={closeNotification}
+        />
+      )}
     </div>
   );
 }

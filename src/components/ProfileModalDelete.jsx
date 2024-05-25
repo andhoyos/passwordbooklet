@@ -1,13 +1,15 @@
 import { useSession, signOut } from "next-auth/react";
 import { useState } from "react";
 import axios from "axios";
+import Notification from "@/components/Notification";
 
 const DeleteProfilePage = ({ username, userId, closeModal }) => {
   const { data: session } = useSession();
   const [message, setMessage] = useState({ type: "", content: "" });
 
-  const bgError = "bg-red-400";
-  const bgSuccess = "bg-green-400";
+  const closeNotification = () => {
+    setMessage({ type: "", content: "" });
+  };
 
   const deleteUser = async () => {
     console.log("esta es la session", session);
@@ -83,15 +85,6 @@ const DeleteProfilePage = ({ username, userId, closeModal }) => {
             <div className="sm:flex sm:items-start">
               <div className="mt-3  sm:mt-0  sm:text-left w-full">
                 <div className="bg-white text-slate-500 md:px-8 px-4 py-6 max-w-md md:w-96 w-full mx-auto  rounded-lg">
-                  {message.content && (
-                    <div
-                      className={`${
-                        message.type === "error" ? `${bgError}` : `${bgSuccess}`
-                      } text-white p-2 mb-2 rounded-md`}
-                    >
-                      {message.content}
-                    </div>
-                  )}
                   <div className="text-center text-2xl">
                     <h1>
                       Vamos a eliminar el Usuario <strong>{username}</strong>
@@ -124,6 +117,15 @@ const DeleteProfilePage = ({ username, userId, closeModal }) => {
           </div>
         </div>
       </div>
+      {message.content && (
+        <div className="flex justify-center">
+          <Notification
+            message={message.content}
+            type={message.type}
+            onClose={closeNotification}
+          />
+        </div>
+      )}
     </div>
   );
 };

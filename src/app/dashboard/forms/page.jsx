@@ -4,6 +4,7 @@ import { useEffect, useState, useRef } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useSession } from "next-auth/react";
 import axios, { AxiosError } from "axios";
+import Notification from "@/components/Notification";
 
 const KeyForm = () => {
   const params = useSearchParams();
@@ -20,8 +21,9 @@ const KeyForm = () => {
 
   const formRef = useRef(null);
 
-  const bgError = "bg-red-400";
-  const bgSuccess = "bg-green-400";
+  const closeNotification = () => {
+    setMessage({ type: "", content: "" });
+  };
 
   useEffect(() => {
     if (searchCompanyName) {
@@ -91,21 +93,12 @@ const KeyForm = () => {
   };
 
   return (
-    <div className="flex justify-center items-center ">
+    <div className="flex justify-center items-center">
       <form
         onSubmit={handleSubmit}
         ref={formRef}
         className="bg-white text-slate-500 px-8 py-10 max-w-md  w-96 mx-auto shadow-lg  rounded-lg"
       >
-        {message.content && (
-          <div
-            className={`${
-              message.type === "error" ? `${bgError}` : `${bgSuccess}`
-            } text-white p-2 mb-2 rounded-md`}
-          >
-            {message.content}
-          </div>
-        )}
         <h1 className="md:text-3xl text-2xl font-bold mb-7">
           {isCompanyId ? "Actualizar Registro" : "Nuevo Registro"}
         </h1>
@@ -141,6 +134,13 @@ const KeyForm = () => {
           Guardar
         </button>
       </form>
+      {message.content && (
+        <Notification
+          message={message.content}
+          type={message.type}
+          onClose={closeNotification}
+        />
+      )}
     </div>
   );
 };

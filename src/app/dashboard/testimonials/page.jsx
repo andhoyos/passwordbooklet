@@ -4,6 +4,7 @@ import { useState, useRef } from "react";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import axios, { AxiosError } from "axios";
+import Notification from "@/components/Notification";
 
 const TestimonialsForm = () => {
   const { data: session } = useSession();
@@ -12,8 +13,9 @@ const TestimonialsForm = () => {
 
   const formRef = useRef(null);
 
-  const bgError = "bg-red-400";
-  const bgSuccess = "bg-green-400";
+  const closeNotification = () => {
+    setMessage({ type: "", content: "" });
+  };
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -71,15 +73,6 @@ const TestimonialsForm = () => {
         ref={formRef}
         className="bg-white text-slate-500 px-8 py-10 max-w-md  w-96 mx-auto shadow-lg  rounded-lg"
       >
-        {message.content && (
-          <div
-            className={`${
-              message.type === "error" ? `${bgError}` : `${bgSuccess}`
-            } text-white p-2 mb-2 rounded-md`}
-          >
-            {message.content}
-          </div>
-        )}
         <h1 className="md:text-3xl text-2xl font-bold mb-7">Calificación</h1>
 
         <label className="text-slate-400">Descripcion:</label>
@@ -93,6 +86,13 @@ const TestimonialsForm = () => {
           Guardar
         </button>
       </form>
+      {message.content && (
+        <Notification
+          message={message.content}
+          type={message.type}
+          onClose={closeNotification}
+        />
+      )}
     </div>
   );
 };

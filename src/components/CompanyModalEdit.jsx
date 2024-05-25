@@ -1,6 +1,7 @@
 import { useSession } from "next-auth/react";
 import { useState, useRef } from "react";
 import axios from "axios";
+import Notification from "@/components/Notification";
 
 const CompanyModalEdit = ({
   company,
@@ -16,8 +17,9 @@ const CompanyModalEdit = ({
     company: company,
   });
 
-  const bgError = "bg-red-400";
-  const bgSuccess = "bg-green-400";
+  const closeNotification = () => {
+    setMessage({ type: "", content: "" });
+  };
 
   const handleChangeCompany = (nuevaCompany) => {
     setDatosFormulario({ ...datosFormulario, company: nuevaCompany });
@@ -115,15 +117,6 @@ const CompanyModalEdit = ({
                   ref={formRef}
                   className="bg-white text-slate-500 md:px-8 px-4 pb-6 pt-1 max-w-md md:w-96 w-full mx-auto  rounded-lg"
                 >
-                  {message.content && (
-                    <div
-                      className={`${
-                        message.type === "error" ? `${bgError}` : `${bgSuccess}`
-                      } text-white p-2 mb-2 rounded-md`}
-                    >
-                      {message.content}
-                    </div>
-                  )}
                   <h1 className="text-3xl font-bold py-2">Editar Compañia</h1>
 
                   <label className="text-slate-400">Compañia:</label>
@@ -149,6 +142,15 @@ const CompanyModalEdit = ({
                     </button>
                   </div>
                 </form>
+                {message.content && (
+                  <div className="flex justify-center">
+                    <Notification
+                      message={message.content}
+                      type={message.type}
+                      onClose={closeNotification}
+                    />
+                  </div>
+                )}
               </div>
             </div>
           </div>

@@ -4,6 +4,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { useSession } from "next-auth/react";
 import { useState, useRef } from "react";
 import axios from "axios";
+import Notification from "@/components/Notification";
 
 const EditAccountPage = () => {
   const [message, setMessage] = useState({ type: "", content: "" });
@@ -22,8 +23,9 @@ const EditAccountPage = () => {
     account: searchAccount,
   });
 
-  const bgError = "bg-red-400";
-  const bgSuccess = "bg-green-400";
+  const closeNotification = () => {
+    setMessage({ type: "", content: "" });
+  };
 
   const handleChangeAccount = (newAccount) => {
     setDatosFormulario({ ...datosFormulario, account: newAccount });
@@ -45,7 +47,6 @@ const EditAccountPage = () => {
 
       const updatedData = { name: accountName };
 
-      // Si se proporciona una nueva contraseña, agregarla a los datos actualizados
       if (newPassword) {
         updatedData.password = newPassword;
         updatedData.iv = "";
@@ -87,17 +88,8 @@ const EditAccountPage = () => {
         ref={formRef}
         className="bg-white text-slate-500 px-8 py-10 max-w-md  w-96 mx-auto shadow-lg  rounded-lg"
       >
-        {message.content && (
-          <div
-            className={`${
-              message.type === "error" ? `${bgError}` : `${bgSuccess}`
-            } text-white p-2 mb-2 rounded-md`}
-          >
-            {message.content}
-          </div>
-        )}
         <h1 className="md:text-3xl text-2xl font-bold  ">Editar Cuenta</h1>
-        <p className="md:text-2xl text-xl font-bold mb-7">{searchCompany}</p>
+        <p className="md:text-2xl text-xl font-bold mb-7 ">{searchCompany}</p>
 
         <label className="text-slate-400">Cuenta:</label>
         <input
@@ -132,6 +124,13 @@ const EditAccountPage = () => {
           </button>
         </div>
       </form>
+      {message.content && (
+        <Notification
+          message={message.content}
+          type={message.type}
+          onClose={closeNotification}
+        />
+      )}
     </div>
   );
 };

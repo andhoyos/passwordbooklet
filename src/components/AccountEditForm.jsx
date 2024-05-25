@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
 import axios from "axios";
 import Link from "next/link";
+import Notification from "@/components/Notification";
 
 export default function AccountEditForm({
   company,
@@ -21,13 +22,14 @@ export default function AccountEditForm({
 
   const formRef = useRef(null);
 
+  const closeNotification = () => {
+    setMessage({ type: "", content: "" });
+  };
+
   const [datosFormulario, setDatosFormulario] = useState({
     usuario: usuario,
     contrasena: contrasena,
   });
-
-  const bgError = "bg-red-400";
-  const bgSuccess = "bg-green-400";
 
   const handleChangeUsuario = (nuevoUsuario) => {
     setDatosFormulario({ ...datosFormulario, usuario: nuevoUsuario });
@@ -83,15 +85,6 @@ export default function AccountEditForm({
         ref={formRef}
         className="bg-white px-8 py-10 max-w-md  w-96 mx-auto shadow-lg  rounded-lg"
       >
-        {message.content && (
-          <div
-            className={`${
-              message.type === "error" ? `${bgError}` : `${bgSuccess}`
-            } text-white p-2 mb-2 rounded-md`}
-          >
-            {message.content}
-          </div>
-        )}
         <h1 className="text-4xl font-bold  text-slate-700">Editar Cuenta</h1>
         <p className="text-2xl font-bold mb-7 text-slate-600">{company}</p>
 
@@ -126,6 +119,13 @@ export default function AccountEditForm({
           </button>
         </div>
       </form>
+      {message.content && (
+        <Notification
+          message={message.content}
+          type={message.type}
+          onClose={closeNotification}
+        />
+      )}
     </div>
   );
 }

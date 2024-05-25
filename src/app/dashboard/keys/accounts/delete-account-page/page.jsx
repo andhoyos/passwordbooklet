@@ -4,6 +4,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { useSession } from "next-auth/react";
 import { useState } from "react";
 import axios from "axios";
+import Notification from "@/components/Notification";
 
 const DeleteAccountPage = () => {
   const [message, setMessage] = useState({ type: "", content: "" });
@@ -15,8 +16,9 @@ const DeleteAccountPage = () => {
   const searchAccountId = params.get("accountId");
   const searchCompany = params.get("company");
 
-  const bgError = "bg-red-400";
-  const bgSuccess = "bg-green-400";
+  const closeNotification = () => {
+    setMessage({ type: "", content: "" });
+  };
 
   const deleteAccount = async () => {
     try {
@@ -52,15 +54,6 @@ const DeleteAccountPage = () => {
 
   return (
     <div className="flex flex-col gap-y-10 items-center justify-center">
-      {message.content && (
-        <div
-          className={`${
-            message.type === "error" ? `${bgError}` : `${bgSuccess}`
-          } text-white p-2 mb-2 rounded-md`}
-        >
-          {message.content}
-        </div>
-      )}
       <div className="text-center text-2xl">
         <h1>
           Vamos a eliminar la cuenta <strong>{searchAccountCompany}</strong>
@@ -84,6 +77,13 @@ const DeleteAccountPage = () => {
           Eliminar
         </button>
       </div>
+      {message.content && (
+        <Notification
+          message={message.content}
+          type={message.type}
+          onClose={closeNotification}
+        />
+      )}
     </div>
   );
 };
