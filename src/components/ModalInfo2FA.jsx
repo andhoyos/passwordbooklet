@@ -58,7 +58,7 @@ const Info2FA = ({ closeModal }) => {
         setTimeout(() => {
           setMessage({ type: "", content: "" });
           router.push("/dashboard/keys");
-        }, 2000);
+        }, 3000);
       }
     } catch (error) {
       console.error("Error during updated:", error);
@@ -176,13 +176,11 @@ const Info2FA = ({ closeModal }) => {
           </div>
         </div>
         {message.content && (
-          <div className="flex justify-center ">
-            <Notification
-              message={message.content}
-              type={message.type}
-              onClose={closeNotification}
-            />
-          </div>
+          <Notification
+            message={message.content}
+            type={message.type}
+            onClose={closeNotification}
+          />
         )}
       </div>
     </div>
