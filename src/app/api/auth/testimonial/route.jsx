@@ -5,7 +5,9 @@ import Testimonial from "@/models/testimonial";
 export async function GET() {
   try {
     await connectDB();
-    const testimonialsFound = await Testimonial.find();
+    const testimonialsFound = await Testimonial.find()
+      .sort({ createdAt: -1 })
+      .limit(5);
 
     return NextResponse.json(testimonialsFound);
   } catch (error) {

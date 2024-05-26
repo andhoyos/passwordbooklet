@@ -117,13 +117,15 @@ function CodeAuth() {
                 Authenticator{" "}
               </Link>
             </div>
-            <button
-              className="w-full mt-5 mb-10"
-              onClick={generateTotpSecret}
-              disabled={totpSecret}
-            >
-              Generar clave secreta
-            </button>
+            <div className="mt-5 mb-10 text-slate-50 text-center">
+              <button
+                className=" mx-auto px-2 py-1 rounded-md bg-gradient-to-r from-rose-400 via-fuchsia-500 to-indigo-500"
+                onClick={generateTotpSecret}
+                disabled={totpSecret}
+              >
+                Generar clave secreta
+              </button>
+            </div>
           </>
         )}
       </div>
