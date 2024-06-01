@@ -131,6 +131,7 @@ const EditAccountPage = () => {
           onClose={closeNotification}
         />
       )}
+      <div className="bg-asymmetric h-screen" style={{ zIndex: -99999 }}></div>
     </div>
   );
 };

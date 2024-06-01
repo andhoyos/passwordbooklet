@@ -22,6 +22,46 @@
   background-color: rgb(241 245 249 /1)
 }
 
+.bg-asymmetric {
+  z-index: index -99999;
+  position: fixed;
+  height: calc(100% - 27vh);
+  width: 100%;
+  bottom: 0;
+  left: 0;
+  overflow: hidden;
+  pointer-events: none;  
+  background: url(../images/bg-forms/bg-color.svg) center 10px no-repeat;
+  /* background: url(https://app-cdn.clickup.com/es-ES/login__bg.8e44616319b55ac1.svg) center 10px no-repeat; */
+  background-size: cover;
+}
+
+.bg-asymmetric:before {
+  content: "";
+  display: block;
+  position: absolute;
+  width: 200%;
+  height: 300%;
+  top: -100%;
+  left: -50%;
+  background: url(../images/bg-forms/bg-point.svg);
+  /* background: url(https://app-cdn.clickup.com/es-ES/login__bg-dots.4777a8eaedc1248b.svg); */
+  transform: rotate(-28deg);
+}
+
+.bg-asymmetric:after {
+  content: "";
+  display: block;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  background: url(../images/bg-forms/bg-form.svg) center top no-repeat;
+  /* background: url(https://app-cdn.clickup.com/es-ES/login__bg-top.f55110285bf7cd54.svg) center top no-repeat; */
+  background-size: 100%;
+}
+
 .loader {
   border: 4px solid #f3f3f3;
   border-top: 4px solid #3498db;
@@ -34,4 +74,10 @@
 @keyframes spin {
   0% { transform: rotate(0deg); }
   100% { transform: rotate(360deg); }
+}
+
+@media screen and (height <= 700px) {
+  .bg-asymmetric:after {
+      background-size: 100% 50vh;
+  }
 }
