@@ -53,6 +53,31 @@ export async function PUT(request) {
 
     await connectDB();
 
+    const usernameUserFound = await User.findOne({
+      username: updatedData.username,
+    });
+
+    if (
+      usernameUserFound &&
+      usernameUserFound._id.toString() !== session.user._id
+    ) {
+      return NextResponse.json(
+        { message: "El nombre de usuario ya existe" },
+        { status: 400 }
+      );
+    }
+
+    const emailUserFound = await User.findOne({
+      email: updatedData.email,
+    });
+
+    if (emailUserFound && emailUserFound._id.toString() !== session.user._id) {
+      return NextResponse.json(
+        { message: "Ya existe un usuario registrado con este Email" },
+        { status: 400 }
+      );
+    }
+
     const userUpdate = await User.findOneAndUpdate(
       {
         _id: session.user._id,
